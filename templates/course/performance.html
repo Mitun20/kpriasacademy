@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Performance</h5>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{%url 'home' %}" class="text-muted">Home</a>
+            </li>
+        
+            <li class="breadcrumb-item">
+              <a href="#" class="text-muted">Performance</a>
+            </li>
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+  
+
+
+  <hr>
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container mb-3">
+      
+      <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url({%static 'assets/media/misc/bg-1.jpg' %})">
+        <!--begin::Title-->
+        <h4 class="d-flex flex-center rounded-top">
+          <span class="text-white">Course Performance</span>
+          
+        </h4>
+        <!--end::Title-->
+        <!--begin::Tabs-->
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#score">Scores</a>
+          </li>
+         
+
+
+        </ul>
+        <!--end::Tabs-->
+      </div>
+      <!--end::Header-->
+      <!--begin::Content-->
+      <div class="tab-content">
+        <!--begin::Tabpane-->
+        <div class="tab-pane fade active show p-8" id="score" role="tabpanel">
+           <!--table style1-->
+           <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body py-0">
+              <!--begin::Table-->
+          
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-head-custom table-vertical-center">
+                     
+                        </table>
+                      </div>
+                       <br><br>
+          
+
+                    </div>
+                  </div>
+                  
+                  </div>
+          
+        </div>
+        <!--end::Tabpane-->
+   
+
+        
+                                        
+      </div>
+      
+     
+   
+    </div>
+
+
+    
+    <!--end::Container-->
+  </div>
+
+  <hr>
+ 
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-piechart-outlabels"></script>
+<script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+
+
+
+
+<script>
+
+  $("#myTable th").remove();
+                $("#myTable tr").remove();
+               
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Test Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Score</th>');  
+                       
+                $("#myTable").append('</tr>');
+                
+                var test_names ={{test_names|safe}};
+                var scores={{score|safe}};
+            
+
+                for (i = 0; i < test_names.length; i++) {
+
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);  
+         
+                     cell1.innerHTML = test_names[i];
+                     cell2.innerHTML = scores[i];
+              
+                 }
+
+                 
+                                 
+</script> 
+{% endblock %}

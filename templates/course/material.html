@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+  
+
+   <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Course</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                  <li class="breadcrumb-item">
+                      <a href="{% url 'home'  %}" class="text-muted">Home</a>
+                  </li>
+                  <li class="breadcrumb-item">                        
+                    <a href="{% url 'course'  %}" class="text-muted"> Course</a>                    
+                  </li>
+                  <li class="breadcrumb-item">                           
+                    {% with topics|first as first_topic %}                      
+                      {% if first_topic %}                      											
+                           <a href="{% url 'course_detail' first_topic.part.course.id  %}" class="text-muted">{{first_topic.part.course}} </a>
+                      {% endif %}
+                    {% endwith %}                  
+                 </li>
+
+                  <li class="breadcrumb-item">
+                    <a href="#" class="text-muted"> Material</a>
+                </li>
+              </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<br>
+<h3>Materials</h3>
+
+   {% for topic in topics %}
+       <button class="collapsible mb-1">{{topic}} - {{topic.subject}}</button>
+       <div class="material_content">
+           <br>
+         <ul>
+             {% for material in topic.material_set.all %}
+       
+             <li  style="list-style-type: none;">
+
+              <div class="row pl-3">  
+                <h3>                                                       
+                <i class="text-dark-50 flaticon-download"></i>  &nbsp; &nbsp;
+                      
+                <a style="float-right" href="{{material.material.url}}" download>
+                  {{material.title}}
+                </a>    
+
+              </h3>
+
+            </div>
+
+
+             {% endfor %}
+
+          </ul>
+
+        </div>
+   {% empty %}     
+        <h3>No Materils Available </h3>
+   {% endfor %}
+
+
+</div>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
+
+{% endblock %}

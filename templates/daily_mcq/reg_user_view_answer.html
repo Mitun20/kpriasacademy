@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% load check_answer_tags %}
+
+{% block content %}
+
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+  <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+    <!--begin::Info-->
+    <div class="d-flex align-items-center flex-wrap mr-1">
+      <!--begin::Page Heading-->
+      <div class="d-flex align-items-baseline flex-wrap mr-5">
+        <!--begin::Page Title-->
+        <h5 class="text-dark font-weight-bold my-1 mr-5">Daily MCQ Answers</h5>
+        <!--end::Page Title-->
+        <!--begin::Breadcrumb-->
+        <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+          <li class="breadcrumb-item">
+            <a href="{% url 'home'  %}" class="text-muted">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'daily_mcq' %}" class="text-muted">Daily MCQ</a>
+          </li>
+          <li class="breadcrumb-item">
+             
+              
+            <a href="{% url 'daily_mcq_filter' attempt.test.open_date|date:'n' attempt.test.open_date|date:'Y'  %}" class="text-muted">{{ attempt.test.open_date|date:'F, Y' }} </a>
+                        
+        </li>
+          <li class="breadcrumb-item">
+            <a href="#" class="text-muted">Answers</a>
+          </li>
+        </ul>
+        <!--end::Breadcrumb-->
+      </div>
+      <!--end::Page Heading-->
+    </div>
+    <!--end::Info-->
+    <!--begin::Toolbar-->
+    <div class="d-flex align-items-center mt-2">
+
+    </div>
+    <!--end::Toolbar-->
+  </div>
+</div>
+
+<hr>
+
+<div class="d-flex flex-column-fluid">
+  <!--begin::Container-->
+  <div class="container text-center">
+    
+    <div class="row justify-content-md-center">      
+    
+    <!--table style1-->
+      <div class="card card-custom gutter-b">
+      <!--begin::Body-->
+      <div class="card-body py-0">
+        <!--begin::Table-->
+        <div class="table-responsive">
+          <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+            <thead>
+              <tr class="text-uppercase">                 
+                <th class="pl-0" style="min-width: 100px">Test Name</th>                 
+                <th style="min-width: 150px">Net Score</th>
+                <th style="min-width: 120px">Correct Score</th>
+                <th style="min-width: 150px">Negative Score</th>
+                <th style="min-width: 130px">Duration</th>    
+                <th style="min-width: 130px">Live Discussion</th>           
+                <th style="min-width: 130px">Discussion Video</th>                  
+              </tr>
+            </thead>
+            <tbody> 
+       
+                <tr>                 
+                   <td class="pl-0 font-weight-bolder">
+                      {{attempt.test}}
+                   </td>
+                
+                 <td>
+                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{attempt.net_score}}</span>
+                 </td>
+
+                 <td>
+                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{attempt.correct_score}}</span>
+                 </td>
+
+                 <td>                      
+                    {% if attempt.test.negative_mark %}
+                      <span class="text-dark-75 font-weight-bolder d-block font-size-lg"> {{attempt.nagative_mark|safe}}</span>
+                     {% else %}
+                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">NA</span>
+                     {% endif %}
+                 </td>
+
+                  <td>
+                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{attempt.duration}} Minutes
+                  </td>
+
+                  <td>
+                  
+                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+  
+                      
+                      {% if attempt.test.live_discussion_link and attempt.test.live_discussion_date_comparing  %}                
+                     
+                          <a style="color:#007bff" target="_blank" href="{{attempt.test.live_discussion_link}}"><u>{{ attempt.test.live_discussion_date|date:"d/m/Y : g.i A" }}</u></a>	
+                       
+                      {% else %}                    
+                            No discussion
+                      {% endif %}
+  
+                      </span>
+                </td>
+               
+  
+                    <td>
+                      <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                        {% if attempt.test.show_answers  %}
+                          {% if attempt.test.discussion_video_link %}
+                            <a style="color:#007bff" href="{% url 'discussion' attempt.test.id %}"><u>Discussion Link</u></a>
+                          {% else %}
+                              No discussion
+                           {% endif %}
+                        {% else %}
+                              No discussion
+  
+                        {% endif %}
+  
+                        </span>
+                  </td>
+  
+                </tr>           
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
+      <!--end::Body-->
+    </div>
+      <!--END-->
+    </div>
+  </div>
+  <!--end::Container-->
+</div>
+<hr>  
+
+
+
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+  <!--begin::Container-->
+  <div class="container">
+    {% if attempt.test.show_answers  %}
+    <div class="row">
+
+      <div class="col-md-11 ">
+         <h4>Details:</h4>
+      </div>
+      <div class="col-md-1 text-muted">
+         
+         <button class="btn btn-danger btn-sm "><a class="text-white" href="javascript:alert('Please be sure to set your printer to Landscape.');window.print();">Print</a></button> 
+
+      </div>
+    </div>
+    
+    
+    <div class="row justify-content-md-center mt-1">
+    
+    
+    
+    <!--table style1-->
+      <div class="card card-custom w-100 gutter-b">
+     
+      <!--begin::Body-->
+      <div class="card-body py-0">
+        <!--begin::Table-->
+        <div class="table-responsive">
+          <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+            <thead>
+              <tr class="text-uppercase">
+                <th class="pl-0" style="min-width: 100px">No</th>
+                <th class="pl-0" style="min-width: 100px">Question</th>
+                    
+               
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+
+          {% for question in question %}
+         
+                <tr>
+                  <td class="pl-0 text-dark-75 font-weight-bolder d-block font-size-lg">
+
+                    {{ forloop.counter }}
+                  
+                  </td>
+               
+                   <td class="pl-0">
+                    <h5 class="text-dark-75 font-weight-bolder d-block font-size-lg"> {{question.description|safe}}  </h5>
+                     <ul style="list-style-type:upper-alpha">
+
+                      {%  check_answer question.id request.user attempt.id as attempted_question %}
+                   
+                          {% for options in question.option_set.all %}
+
+
+                          {% if options ==  question.correct_option  %}
+
+                          {% if attempted_question.option == options %}
+
+                            <span style="color:#24bc24;"  class="font-weight-bolder d-block font-size-lg">
+                              {{ options.alphabet }}) {{options.description|safe}}  &#10004;
+                            </span>
+
+                          
+
+                            {% else %}
+
+                            <span style="color:#24bc24;"  class="font-weight-bolder d-block font-size-lg">
+                              {{ options.alphabet }}) {{options.description|safe}}
+                            </span>
+
+
+                            {% endif %}
+
+                          {% elif attempted_question.option == options %}
+
+                          <span style="color:red;"  class="font-weight-bolder d-block font-size-lg">
+                            {{ options.alphabet }}) {{options.description|safe}} &#10060;
+                          </span>
+
+                          {% else %}
+
+                          <span class="font-weight-bolder d-block font-size-lg">
+                           {{ options.alphabet }}) {{options.description|safe}}
+                          </span>
+
+
+
+                          {% endif %}
+
+                        
+                          {% endfor %}
+
+                      </ul>
+                      <h5>Answer Explanations:</h5>
+                      <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="text-indent: 50px;">
+                        {{question.answer_description|safe}}
+                      </span>
+
+
+                   </td>
+                   <td>
+                      
+                      
+                   </td>
+                 
+                  
+                   
+               
+              
+                
+             
+                </tr>
+
+
+          {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
+      <!--end::Body-->
+    </div>
+      <!--END-->
+    </div>
+
+
+    {% endif %}
+  </div>
+  <!--end::Container-->
+</div>
+<!--end::Entry-->
+
+
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load login_form_tags %}
+{% load crispy_forms_tags %}
+{% load check_course_enrolment_batch %}
+{% load static %}
+
+{% block content %}
+ <!--begin::Subheader-->
+ <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Profile</h5>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{%url 'home' %}" class="text-muted">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{% url 'view_profile' %}" class="text-muted">View Profile</a>
+            </li>
+           
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+  
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+
+
+<div class="kt-portlet kt-portlet--height-fluid">
+    <div class="kt-portlet__body">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-12 mb-3 col-lg-2"></div>
+              </div>
+        <h3 class="pl-8">My Profile</h3>
+        <div class="table-responsive m-2 col-lg-8">
+
+            <table class="table table-bordered">
+           
+                <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>{{user.get_full_name}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Admission number</th>
+                    <td>{{user.admission_number}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Native</th>
+                    <td>{{user.native}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Age</th>
+                    <td>{{user.age}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Mobile No</th>
+                    <td>{{user.mobile_no}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Community</th>
+                    <td>{{user.community}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Religion</th>
+                    <td>{{user.religion}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Mother tongue</th>
+                    <td>{{user.mother_tongue}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Present address</th>
+                    <td>{{user.present_address}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Permanent address</th>
+                    <td>{{user.permanent_address}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Count of cleared prelims exam</th>
+                    <td>{{user.count_of_cleared_prelims_exam}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Count of cleared mains exam:</th>
+                    <td>{{user.count_of_cleared_mains_exam}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Count of cleared interview:</th>
+                    <td>{{user.count_of_cleared_interview}}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Profile Picture:</th>
+                    <td><img src="{{user.profile_picture.url}}" height="100" width="100" ></td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Signatire:</th>
+                    <td><img src="{{user.signature_of_the_applicant.url}}" height="70" width="250" ></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">View Course Batch:</th>
+                    <td><a href="{% url 'batch_update' %}" >View</a></td>
+                  </tr>
+
+
+ 
+                </tbody>
+              </table>
+                  
+           
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+    <script>
+
+    $( document ).ready(function() {
+
+        $('#course').on('click','#update_batch', function(){
+            alert('cool');
+            
+            event.preventDefault();
+            url = $(this).attr('data-url');
+            form = $('#AjaxModal #quiz_assignment_form').serialize();
+            $.ajax({
+                url : url,
+                data : form,
+                method: 'post',
+       
+                success:function(output)
+                {
+                    if(output.valid)
+                    {
+
+                        $('#AjaxModal').modal('hide');
+                        $('#assignment_div').html(output.html)
+                    }
+                    else
+                    {
+                        $('#AjaxModal').html(output.form);
+                    }
+            
+            
+                },
+            });
+        });
+
+    });
+    </script>
+
+
+{% endblock %}

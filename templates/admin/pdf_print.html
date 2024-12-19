@@ -1,0 +1,339 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>  &nbsp;</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <script src="https://jasonday.github.io/printThis/printThis.js"></script>
+  
+<style>
+
+@media print {
+.print_color,span,table,th,td,p {
+      color: #4585d8 !important;
+  }
+}
+    
+body,span,p {
+    color: #4585d8;
+    -webkit-print-color-adjust: exact;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    
+}
+
+.img-size{
+  height: 13px;
+  width: 13px;
+}
+
+</style>
+
+</head>
+<body>
+<div class="container" >
+  <div class="row" id="print_form">
+
+    <div class="col-xs-12 print_color mt-1" >
+         KPR IAS Academy, UPSC  <img class="img-size" {% if user.regular %} src="{%static '/printpdf/square-check.png' %}" {% else %}  src="{%static '/printpdf/square.png' %}"  {% endif %}> Regular  <img class="img-size" {% if user.weekend %} src="{%static '/printpdf/square-check.png' %}" {% else %}  src="{%static '/printpdf/square.png' %}"  {% endif %}> Weekend <img class="img-size" {% if user.hostel %} src="{%static '/printpdf/square-check.png' %}" {% else %}  src="{%static '/printpdf/square.png' %}"  {% endif %}> Hostel  <img class="img-size" {% if user.study_hall %} src="{%static '/printpdf/square-check.png' %}" {% else %}  src="{%static '/printpdf/square.png' %}"  {% endif %}> Study Hall <img class="img-size" {% if user.merit %} src="{%static '/printpdf/square-check.png' %}" {% else %}  src="{%static '/printpdf/square.png' %}"  {% endif %}> Merit&nbsp;  Admission No:{{user.admission_number|default:""}} {% if not user.admission_number %}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {% endif %}  Dt:
+    </div>
+    <div class="col-xs-4 ">
+        <p style="width: 200px; display: table;margin-top: -2px;">   
+            <span style="display: table-cell; width: 50px;" class="print_color">Batch:</span>
+            <span style="display: table-cell; border-bottom: 1px solid #4585d8;" >{{user.batch|default:""}}</span>
+          </p>
+    </div>
+    <div class="col-xs-4">
+
+        <p style="width: 200px; display: table;">
+            <span style="display: table-cell; width: 100px;" class="print_color">Optional Sub:</span>
+            <span style="display: table-cell; border-bottom: 1px solid  #4585d8;"></span>
+        </p>
+
+    </div>
+    <div class="col-xs-4">
+
+        <p style="width: 200px; display: table;">
+            <span style="display: table-cell; width: 100px;" class="print_color">Received amt:</span>
+            <span style="display: table-cell; border-bottom: 1px solid  #4585d8;">Rs.{{user.received_amount|default:""}}</span>
+        </p>
+
+    </div>
+
+
+    <div class="col-xs-4 ml-4"   style="margin-top: -12px;">
+
+        <p style="width: 200px; display: table;">
+            <span>1. Name  &nbsp;: </span>
+            <span> {{user.get_full_name}}</span>
+        </p>
+
+        <p style="width: 200px; display: table;margin-top: -7px">
+            <span>2. Native : </span>
+            <span> {{user.native}}</span>
+        </p>
+
+        <p style="width: 200px; display: table;margin-top: -7px">
+            <span>3. D.O.B : </span>
+            <span> {{user.dob}}</span>
+        </p>
+
+        <p style="width: 200px; display: table;margin-top: -7px">
+            <span>4. Age &nbsp; &nbsp;:  </span>
+            <span> {{user.age}}</span>
+        </p>
+        
+
+
+    </div>
+    <div class="col-xs-4">
+
+        <p style="width: 200px; display: table;margin-top: -12px;margin-top: -7px">
+            <span>Ph&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;:</span>
+            <span>  &nbsp;{{user.mobile_no}}</span>
+        </p>
+
+        <p style="width: 200px; display: table;margin-top: -7px">
+            <span>5. Community &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;:</span>
+            <span> {{user.community}}</span>
+        </p>
+
+        <p style="width: 200px; display: table;margin-top: -7px">
+            <span>6. Religion      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>
+            <span> {{user.religion}}</span>
+        </p>
+
+        <p style="width: 200px; display: table;margin-top: -7px">
+            <span>7. Mother Tongue :</span>
+            <span> {{user.mother_tongue}}</span>
+        </p>
+
+    </div>
+    <div class="col-xs-4" style="margin-top: -7px">
+
+      <div class="row">
+
+        <div class="col-xs-6">
+          <img src="{{user.profile_picture.url}}" height="100" width="100">
+        </div class="col-xs-6">
+            <span>Hostel fee - {% if user.hostel_fees %}  {{user.hostel_fees}} / ({{user.hostel_fees_paid_date|date:"d.n.Y"}}) {% endif %}</span>
+        <div>
+        </div>
+
+
+      </div>
+
+       
+
+    </div>
+
+    <div class="col-xs-12" style="margin-top: -17px">
+        <p >8. Education Qualification</p>
+
+        <table class="table table-bordered"  style="margin-top: -12px;">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Std</th>
+                <th scope="col">%</th>
+                <th scope="col">Institution</th>
+                <th scope="col">Place</th>
+                <th scope="col">Year</th>
+              </tr>
+            </thead>
+            <tbody>
+
+             {% for education in user.educational_qualification_set.all %}
+
+             <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{education.std}}</td>
+                <td>{{education.percentage}}</td>
+                <td>{{education.institution}}</td>
+                <td>{{education.place}}</td>
+                <td>{{education.year}}</td>
+              </tr>    
+
+             {% endfor %}
+             
+            </tbody>
+          </table>
+     </div>
+    <div class="col-xs-12" style="margin-top: -15px;">
+
+        <table class="table table-bordered" style="width: 70%;height: 1%;"  style="margin-top: -12px;">
+         
+            <tr>
+              <th style="height:15px;" rowspan="2">9:UPSC Achievement:</th>
+              <td>Prelims</td>
+              <td>Mains</td>
+              <td>Interview</td>
+            </tr>
+            <tr>
+              <td>{% if user.count_of_cleared_prelims_exam is None %}
+                -
+
+                {% else %}
+
+                  {{user.count_of_cleared_prelims_exam}}
+                {% endif %}
+              </td>
+              <td>
+                {% if user.count_of_cleared_mains_exam is None %}
+                   -
+                {% else %}
+                  {{user.count_of_cleared_mains_exam}}
+                {% endif %}
+
+              </td>
+              <td>
+                {% if user.count_of_cleared_interview is None %}
+                   -
+                {% else %}
+                  {{user.count_of_cleared_interview}}
+                {% endif %}
+
+
+
+              </td>
+            </tr>
+          </table>
+    </div>
+
+    <div class="col-xs-12">
+
+     
+        <p style="float: left;margin-top: -19px;">10. Family Details</p>
+        <p style="float: right;margin-top: -19px;">Parents ph no: {{user.parents_mobile_no}}</p>
+  
+        <table class="table table-bordered"   style="margin-top: -42px;">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Relation</th>
+                <th scope="col">Age</th>
+                <th scope="col">Occupation</th>
+                <th scope="col">Company</th>
+                <th scope="col">Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+
+             {% for family_detail in user.family_details_set.all %}
+
+             <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{family_detail.name}}</td>
+                <td>{{family_detail.relation}}</td>
+                <td>{{family_detail.age}}</td>
+                <td>{{family_detail.occupation}}</td>
+                <td>{{family_detail.company}}</td>
+                <td>{{family_detail.salary}}</td>
+              </tr>    
+
+             {% endfor %}
+             
+            </tbody>
+          </table>
+     </div>
+
+     <div class="col-xs-12">
+
+        <p style="margin-top: -17px;"></p>
+
+           
+        <p style="float: left;margin-top: -12px;">11.Address</p>
+        <p style="float: right;margin-top: -12px;">Email id: {{user.email}}</p>
+  
+
+        <table class="table table-bordered" style="border: 1px solid #4585d8;margin-top: -12px;">
+            <tr>
+              <th style="width:50%">Present </th>
+              <th style="width:50%">Permanent</th>
+            
+            </tr>
+            <tr>
+              <td height="90">{{user.present_address}}</td>
+              <td height="90">{{user.permanent_address}}</td>
+
+            </tr>
+       
+          </table>
+     </div>
+
+     <div class="col-xs-8">
+       <p style="margin-top: -11px;">I declare that all the information given above is correct</p>
+      
+     </div>
+
+     <div class="col-xs-4">
+         <p style="margin-top: -11px;">Ref Through:</p>
+
+
+    </div>
+
+  
+    <div class="clearfix"></div>
+    <div class="col-xs-6 mb-1">  
+      
+      <img src="{{user.signature_of_the_applicant.url}}" height="50" width="180"> 
+       
+
+   </div>
+
+   <div class="col-xs-3 mt-3">  
+     
+        <span>Reviewed by</span>
+          
+           
+   </div>
+
+   <div class="col-xs-3 mt-3 print_color">      
+    Approved by
+   </div>
+
+  </div>
+
+  <br style="height:30px">
+  <div class="clearfix"></div>
+
+ 
+   <div class="col-xs-4 print_color">      
+    Signature of the applicant
+   </div>
+
+   <div class="col-xs-4 print_color">      
+    Admin Officer
+   </div>
+
+   <div class="col-xs-4 mt-4  print_color">      
+    Director
+   </div>
+  
+   <br class="mt-4">   <br class="mt-4">
+  
+   
+
+   <div class="col-xs-12 text-center print_color"> 
+    <hr size="14"  color="#4585d8" class="print-color">    
+    NO.5, AKS Nagar, Thadagam Road, Gandhipark, Coimbatore, | kpriasacademy.in   
+
+   </div>
+
+  </div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

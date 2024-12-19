@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load check_attempt_tags %}
+{% load static %}
+
+{% load enrollment_tags %}
+
+{% block content %}
+
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Performance</h5>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{%url 'home' %}" class="text-muted">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              
+              <a href="{%url 'dashboard' %}" class="text-muted">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#" class="text-muted">Performance</a>
+            </li>
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+      <!--begin::Toolbar-->
+      <div class="d-flex align-items-center">
+        <!--begin::Actions-->
+        <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Back </a>
+        <!--end::Actions-->
+        <!--begin::Dropdown-->
+      
+        <!--end::Dropdown-->
+      </div>
+      <!--end::Toolbar-->
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+  <hr>
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container mb-3">
+      
+      <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url({%static 'assets/media/misc/bg-1.jpg' %})">
+        <!--begin::Title-->
+        <h4 class="d-flex flex-center rounded-top">
+          <span class="text-white">Test Series Performance</span>
+          
+        </h4>
+        <!--end::Title-->
+        <!--begin::Tabs-->
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#score">Scores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#chart">Comparision Charts</a>
+          </li>
+          
+        </ul>
+        <!--end::Tabs-->
+      </div>
+      <!--end::Header-->
+      <!--begin::Content-->
+      <div class="tab-content">
+        <!--begin::Tabpane-->
+        <div class="tab-pane fade active show p-8" id="score" role="tabpanel">
+           <!--table style1-->
+           <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body py-0">
+              <!--begin::Table-->
+                <div class="table-responsive">
+                    <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+                      <thead>
+                        <tr class="text-uppercase">
+
+                          <th class="pl-0" style="min-width: 100px">Test Nmae</th>
+                          <th style="min-width: 120px">Score</th>
+                          <th style="min-width: 150px">Negative Score</th>                  
+                          <th style="min-width: 130px">Start time</th>
+                          <th style="min-width: 130px">End time</th>
+                          <th style="min-width: 130px">View Detail</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for attempt in attempts %}
+
+                            {% if attempt|length != 2 %}
+
+                              <tr>
+
+                                <td class="pl-0">
+                                  {{attempt.test}}
+                                </td>
+                                <td>
+                                  <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{attempt.score}}</span>
+
+                                </td>
+                                <td>
+                                  <span class="text-dark-75 font-weight-bolder d-block font-size-lg"> {{attempt.nagative_mark|safe}}</span>
+
+                                </td>
+                                <td>
+                                  <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{attempt.start_date_time}}</span>
+
+                                </td>
+
+                                <td>
+                                  <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{attempt.end_date_time}}
+                                </td>
+
+                                <td>
+
+                                  <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                    <a href="{% url 'view_result' attempt.test.id %}" class="btn btn-success font-weight-bolder font-size-sm">
+                                      Detail
+                                    </a> 
+                                  </span>
+
+                                </td>
+                              </tr>
+                            {% else %}
+
+                              <tr>
+
+                                <td class="pl-0">
+                                  {{attempt.0}}
+                                </td>
+                                <td colspan="5">
+                                  Not Attempted
+
+                                </td>
+                              {% endif %}
+                            {% endfor %}
+
+                          </tbody>
+                        </table>
+                      </div>
+<!--end::Table-->
+
+
+                    </div>
+<!--end::Body-->
+                  </div>
+               
+         
+                         
+                   
+          
+        </div>
+        <!--end::Tabpane-->
+        <!--begin::Tabpane-->
+        <div class="tab-pane fade" id="chart" role="tabpanel">
+          <div class="card card-custom gutter-b mt-5">
+
+            <div class="card-body py-0">
+
+              <div class="table-responsive">
+                <canvas id="speedChart" width="874px" height="400">
+
+                </canvas>
+              </div>
+            </div>
+
+          </div>
+         
+            
+              
+        </div>
+        <!--end::Tabpane-->
+                                        
+      </div>
+     
+   
+    </div>
+    <!--end::Container-->
+  </div>
+  <hr>
+  
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+<script>
+var speedCanvas = document.getElementById("speedChart");
+
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 18;
+
+var dataFirst = {
+    label: "Your Score",
+    data: {{scores|safe}},
+    lineTension: 0,
+    fill: false,
+    borderColor: 'red'
+  };
+
+var dataSecond = {
+    label: "Highest Score",
+    data: {{max_scores|safe}},
+    lineTension: 0,
+    fill: false,
+  borderColor: 'blue'
+  };
+
+var speedData = {
+  labels: {{tests|safe}},
+  datasets: [dataFirst, dataSecond]
+};
+
+var chartOptions = {
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+  },
+  scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: '#152C58',
+                        fontSize: 18,
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#a6252e",
+                        fontSize: 14,
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }]
+            }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+  
+});
+
+</script>
+{% endblock %}

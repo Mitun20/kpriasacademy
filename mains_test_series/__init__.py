@@ -1,0 +1,1 @@
+default_app_config = 'mains_test_series.apps.MainsTestSeriesConfig'

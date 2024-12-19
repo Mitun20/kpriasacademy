@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load enrollment_tags %}
+
+{% block content %}
+
+{% load static %}
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Course</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home'  %}" class="text-muted">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'course' %}" class="text-muted"> Courses</a>
+                    </li>
+                  
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+       
+    </div>
+</div>
+
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid mt-5">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+
+                {% for course in course %}
+                <div class="col-lg-6">
+                    <!--begin::Mixed Widget 14-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title font-weight-bolder">{{course}}</h3>
+                            
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column">
+                            
+                            <div class="pt-5 align-items-center">
+                                
+                                <p class="text-center"><img src="{%static 'assets/media/pic.png' %}" alt="" ></p>
+                                <p class="text-center font-weight-normal font-size-lg pb-7" style="text-align: center;margin: auto;">
+                                    {{course.description|safe}}
+                                </p>
+                                 
+                                {% if course.id|check_course_enrollment:request.user  %}
+
+                                  {% if course.lesson_plan %}
+                                    <div class="text-center">
+                                        <a href="{% url 'course_detail' course.id %}" class="btn mt-2 btn-success btn-shadow-hover font-weight-bolder  py-3">View Course Detail</a>
+                                        <a href="media/{{course.lesson_plan}}" download class="btn mt-2 btn-success btn-shadow-hover font-weight-bolder  py-3">Brochure</a>
+                                       
+                                       
+                                            <a  class="btn mt-2  btn-success btn-shadow-hover font-weight-bolder   py-3" href="{% url 'course_schedule' course.id %}"> Schedule </a>
+      
+                                   
+                                    </div>
+                                  {% else %}
+                                  <div class="text-center">
+                                    <a href="{% url 'course_detail' course.id %}" class="btn btn-success btn-shadow-hover font-weight-bolder   py-3">View Course Detail</a>
+                                    <a  class="btn   btn-success btn-shadow-hover font-weight-bolder   py-3" href="{% url 'course_schedule' course.id %}"> Schedule </a>
+
+                                  </div>
+                               
+                                 {% endif %}
+
+                               
+
+                                {% else %}
+
+                                   <div class="text-center">
+
+                                    <a  class="btn text-white btn-shadow-hover font-weight-bolder   py-3"  style="background-color: #152c58;">Not Enrolled</a>
+                                  {% if course.lesson_plan %}
+                                            
+                                  <a href="media/{{course.lesson_plan}}" download  class="btn  btn-success btn-shadow-hover font-weight-bolder  py-3">Brochure</a>
+
+                                  {% endif %}
+
+                                  </div>
+                      
+                                {% endif %}
+
+                     
+
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Mixed Widget 14-->
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+
+
+{% endblock %}

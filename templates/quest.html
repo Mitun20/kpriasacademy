@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Question Upload</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                  <li class="breadcrumb-item">
+                      <a href="{% url 'home'  %}" class="text-muted">Home</a>
+                  </li>
+                  <li class="breadcrumb-item">                        
+                    <a href="#" class="text-muted"> Question Upload</a>                    
+                  </li>
+                
+              </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<br>
+
+
+
+<div class="d-flex flex-column-fluid">
+  <!--begin::Container-->
+  <div class="container mb-3">
+    
+    <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url({%static 'assets/media/misc/bg-1.jpg' %})">
+      <!--begin::Title-->
+      <h4 class="d-flex flex-center rounded-top">
+        <span class="text-white">Question Upload</span>
+        
+      </h4>
+      <!--end::Title-->
+      <!--begin::Tabs-->
+      <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active show" data-toggle="tab" href="#series_tab">Test Series</a>
+        </li>
+       
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#course_tab">Course </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#daily_mcq_tab">Daily MCQ</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#scholarship_tab">Scholarship </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#general_tab">General </a>
+        </li>
+        
+        
+      
+      </ul>
+      <!--end::Tabs-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="tab-content">
+      <!--begin::Tabpane-->
+      <div class="tab-pane fade active show p-8" id="series_tab" role="tabpanel">
+         <!--table style1-->
+         <div class="card card-custom gutter-b">
+          <!--begin::Header-->
+
+          <!--end::Header-->
+          <!--begin::Body-->
+          <div class="card-body mt-4 py-0">
+            <!--begin::Table-->
+            <div class="row mt-2">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-2">
+                <form   action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
+                
+                {% csrf_token %}
+               
+                   <select class="form-control" test_type="prelims" data-tests-url="{% url 'ajax_load_tests' %}" required id="series" style="border-color: #097E75;">  
+                        <option class="refresh" value=''>Choose Series</option>        
+                     {% for series in series %}  
+                        <option value='{{series.id}}'>{{series}}</option>
+                     {% endfor %}
+                   </select>
+
+              </div>
+              <div class="col-sm-2">
+                 <select class="form-control" required name="testie"  id="id_tests" style="border-color: #097E75;"> 
+                    <option class="refresh" value=''>Choose Test</option>
+                 </select>
+       
+               </div>
+               <div class="col-sm-4"></div>
+
+               <div class="col-sm-12 mt-4 text-center">
+                    <input value="prelims" type="hidden" name="test_type" required="required">
+
+                     <input class="btn " type="file" title="Upload excel file" name="excel_file" required="required">
+                     <p> <br>
+                         <input class="btn ml-3"  type="submit" value="Upload" style="background-color: #a6252e;color:cornsilk">
+              </form>
+
+              <p></p>        
+              
+               
+                  {% for error_row in error_rows %}
+
+                    {% if forloop.counter == 1 %}
+                        <p class="float-left"  style="color:#a6252e;">The following rows have issues -
+  
+                    {% endif %}
+                     {{error_row}} , 
+
+                  {% endfor %}
+
+                 </p>
+
+             
+              <table  class="table table-head-custom table-vertical-center table-responsive">
+      
+              {% for row in excel_data %}
+              <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td style="color:green;">Success</td>
+                  {% for cell in row %}
+                     <td> {{ cell }} </td>
+                  {% endfor %}
+              </tr> 
+                  
+              {% endfor %}
+              </table>
+                               
+              </div>  
+            </div>
+          </div>
+      </div>
+      <!--end::Tabpane-->
+</div>
+
+   <!--begin::Tabpane-->
+   <div class="tab-pane fade" id="course_tab" role="tabpanel">
+    <div class="card card-custom gutter-b mt-5">
+
+      <div class="card-body mt-4 py-0">
+
+
+        <div class="row mt-2">
+          <div class="col-sm-4"></div>
+              <div class="col-sm-2">
+                <form  action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
+                
+                {% csrf_token %}
+               
+                   <select class="form-control" test_type="prelims" data-tests-url="{% url 'ajax_load_course_tests' %}" required id="course" style="border-color: #097E75;">  
+                        <option class="refresh" value=''>Choose Course</option>        
+                     {% for course in courses %}  
+                        <option value='{{course.id}}'>{{course}}</option>
+                     {% endfor %}
+                   </select>
+
+              </div>
+              <div class="col-sm-2">
+                 <select class="form-control" required name="testie"  id="id_course_tests" style="border-color: #097E75;"> 
+                    <option class="refresh" value=''>Choose Test</option>
+                 </select>
+       
+               </div>
+           <div class="col-sm-4"></div>
+            <br><br><br>
+
+            
+            <div class="col-sm-12 mt-4 text-center">
+              <input value="course" type="hidden" name="test_type" required="required">
+
+              <input class="btn " type="file" title="Upload excel file" name="excel_file" required="required">
+             <p> <br>
+             <input class="btn ml-3"  type="submit" value="Upload" style="background-color: #a6252e;color:cornsilk">
+            </form>
+
+            <p></p>
+            <hr>
+            <table  class="table table-head-custom table-vertical-center table-responsive">
+    
+            {% for row in excel_data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td style="color:green;">Success</td>
+                {% for cell in row %}
+                   <td> {{ cell }} </td>
+                {% endfor %}
+            </tr> 
+                
+            {% endfor %}
+            </table>
+                   
+            </div> 
+
+        </div>
+        
+      </div>
+
+    </div>
+       
+  </div>
+  <!--end::Tabpane-->
+
+   <!--begin::Tabpane-->
+   <div class="tab-pane fade" id="daily_mcq_tab" role="tabpanel">
+    <div class="card card-custom gutter-b mt-5">
+
+      <div class="card-body mt-4 py-0">
+        <div class="row mt-2">
+          <div class="col-sm-4"></div>
+              <div class="col-sm-2">
+                <form  action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
+                
+                  {% csrf_token %}
+               
+                   <select class="form-control" name="testie" test_type="daily_mcq"  required id="daily_mcq" style="border-color: #097E75;">  
+                        <option class="refresh" value=''>Choose Test</option>        
+                     {% for test in daily_mcq_tests %}  
+                        <option value='{{test.id}}'>{{test}}</option>
+                     {% endfor %}
+                   </select>
+
+              </div>
+              
+           <div class="col-sm-4"></div>
+            <br><br><br>
+
+            
+            <div class="col-sm-12 mt-4 text-center">
+              <input value="daily_mcq" type="hidden" name="test_type" required="required">
+
+              <input class="btn " type="file" title="Upload excel file" name="excel_file" required="required">
+             <p> <br>
+             <input class="btn ml-3"  type="submit" value="Upload" style="background-color: #a6252e;color:cornsilk">
+            </form>
+
+            <p></p>
+            <hr>
+            <table id="myTable" class="table table-head-custom table-vertical-center table-responsive">
+    
+            {% for row in excel_data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td style="color:green;">Success</td>
+                {% for cell in row %}
+                   <td> {{ cell }} </td>
+                {% endfor %}
+            </tr> 
+                
+            {% endfor %}
+            </table>
+          </div> 
+           
+        </div>
+        
+      </div>
+   </div>     
+  </div>
+  <!--end::Tabpane-->
+
+  <div class="tab-pane fade" id="scholarship_tab" role="tabpanel">
+    <div class="card card-custom gutter-b mt-5">
+
+      <div class="card-body mt-4 py-0">
+        <div class="row mt-2">
+          <div class="col-sm-4"></div>
+              <div class="col-sm-2">
+                <form  action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
+                
+                {% csrf_token %}
+               
+                   <select class="form-control" test_type="scholarship" data-tests-url="{% url 'ajax_load_scholarship_tests' %}" required id="scholarship" style="border-color: #097E75;">  
+                        <option class="refresh" value=''>Choose Scholarship</option>        
+                     {% for scholarship in scholarship %}  
+                        <option value='{{scholarship.id}}'>{{scholarship}}</option>
+                     {% endfor %}
+                   </select>
+
+              </div>
+              <div class="col-sm-2">
+                 <select class="form-control" required name="testie"  id="id_scholarship_tests" style="border-color: #097E75;"> 
+                    <option class="refresh" value=''>Choose Test</option>
+                 </select>
+       
+               </div>
+           <div class="col-sm-4"></div>
+            <br><br><br>
+
+            
+            <div class="col-sm-12 mt-4 text-center">
+              <input value="scholarship" type="hidden" name="test_type" required="required">
+
+              <input class="btn " type="file" title="Upload excel file" name="excel_file" required="required">
+             <p> <br>
+             <input class="btn ml-3"  type="submit" value="Upload" style="background-color: #a6252e;color:cornsilk">
+            </form>
+
+            <p></p>
+            <hr>
+            <table id="myTable" class="table table-head-custom table-vertical-center table-responsive">
+    
+            {% for row in excel_data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td style="color:green;">Success</td>
+                {% for cell in row %}
+                   <td> {{ cell }} </td>
+                {% endfor %}
+            </tr> 
+                
+            {% endfor %}
+            </table>
+            
+            </div> 
+           
+        </div>
+  
+      </div>
+
+    </div>
+     
+  </div>
+   
+ 
+  <div class="tab-pane fade" id="general_tab" role="tabpanel">
+    <div class="card card-custom gutter-b mt-5">
+
+      <div class="card-body mt-4 py-0">
+
+        <div class="row mt-2">
+          <div class="col-sm-4"></div>
+              <div class="col-sm-2"> 
+                <form  action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
+                
+                {% csrf_token %}
+                  
+              </div>
+              <div class="col-sm-2">
+               
+               </div>
+           <div class="col-sm-4"></div>
+            <br><br><br>
+
+            
+            <div class="col-sm-12 mt-4 text-center">
+              <input value="general" type="hidden" name="test_type" required="required">
+
+              <input class="btn " type="file" title="Upload excel file" name="excel_file" required="required">
+             <p> <br>
+             <input class="btn ml-3"  type="submit" value="Upload" style="background-color: #a6252e;color:cornsilk">
+            </form>
+
+            <p></p>
+            <hr>
+            <table id="myTable" class="table table-head-custom table-vertical-center table-responsive">
+              
+    
+            {% for row in excel_data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td style="color:green;">Success</td>
+                {% for cell in row %}
+                   <td> {{ cell }} </td>
+                {% endfor %}
+            </tr> 
+                
+            {% endfor %}
+            </table>
+
+            </div> 
+        </div>
+ 
+      </div>
+
+    </div>
+          
+  </div>
+                                  
+ </div>
+    
+</div>  
+
+
+  
+  <!--end::Container-->
+</div>
+
+</div>
+                     
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#series").change(function () {
+    var url = $("#series").attr("data-tests-url"); 
+    test_type=$("#series").attr("test_type"); 
+
+    var seriesID = $(this).children("option:selected").val();  // get the selected country ID from the HTML input
+   
+    $.ajax({  
+                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'series': seriesID,
+        // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_tests").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+//course test ajax
+
+  $("#course").change(function () {
+   
+    var url = $("#course").attr("data-tests-url"); 
+ 
+    var course_ID = $(this).children("option:selected").val();  // get the selected country ID from the HTML input
+     
+    $.ajax({  
+                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'course': course_ID,
+        // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_course_tests").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+
+
+
+
+//scholarship test ajax
+
+$("#scholarship").change(function () {
+   
+   var url = $("#scholarship").attr("data-tests-url"); 
+
+   var scholarship_ID = $(this).children("option:selected").val();  // get the selected country ID from the HTML input
+   
+   $.ajax({  
+                      // initialize an AJAX request
+     url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+     data: {
+       'scholarship_ID': scholarship_ID,
+       // add the country id to the GET parameters
+     },
+     success: function (data) {   // `data` is the return of the `load_cities` view function
+       $("#id_scholarship_tests").html(data);  // replace the contents of the city input with the data that came from the server
+     }
+   });
+
+ });
+
+</script>
+
+
+
+{% endblock %}
+

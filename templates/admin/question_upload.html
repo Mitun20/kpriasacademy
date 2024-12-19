@@ -1,0 +1,43 @@
+{% extends 'admin/change_form.html' %}
+{% block content %}
+{{ block.super }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+$('#id_question').change(function() {  
+
+   var question = []; 
+
+   $('#id_question_from option:selected').each(function() {
+      question.push($(this).val());    
+   });
+
+   var questions = question.join(',');
+
+   $.ajax({                       
+              url: "{% url 'ajax_load_questions' %}",
+              data: {'question':JSON.stringify(questions), },                   
+              success:function(data){   
+
+                $('#table_id').remove();
+
+                 $("#q-details").append(data.questions);  
+               
+                           
+              }
+          });
+    
+ });
+
+
+window.onload = function(){
+  $(".field-question").before("<div id='q-details'></div>");  
+};
+
+
+</script>
+{% endblock %}
+
+
+

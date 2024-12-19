@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+{% load highest_and_lowest_mark_tags %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Staff Dashboard</h5>
+          <!--end::Page Title-->
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+  <hr>
+
+
+  <div class="row container">
+    <div class="col-sm-4">
+      <h5 class=w-100>
+        
+        <select class="form-control" id="user_select" style="border-color: #097E75;">          
+          {% for student in students %}  
+          {% if forloop.counter == 1 %}
+             <option value=''>Choose Student</option>
+             <option value='{{student.id}}'>{{student}}</option>
+            
+          {% else %}   
+          <option value='{{student.id}}'>{{student}}</option>
+
+          {% endif %}  
+             
+          {% endfor %}
+        </select>
+ 
+    </h5>
+
+
+
+    </div>
+    <div class="col-sm-4">
+      <h5 class=w-100>
+        
+        <select class="form-control" id="test_select" style="border-color: #097E75;">          
+          {% for test in test_names %}  
+          
+          {% if forloop.counter == 1 %}
+             <option value=''>Choose Test</option>
+             <option value='{{test.id}}'>{{test}}</option>
+            
+          {% else %}   
+          <option  value='{{test.id}}'>{{test}}</option>
+
+          {% endif %}
+          {% endfor %}
+        </select>
+ 
+    </h5>
+
+
+
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+<br>
+ 
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container mb-3">
+      
+      <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url({%static 'assets/media/misc/bg-1.jpg' %})">
+        <!--begin::Title-->
+        <h4 class="d-flex flex-center rounded-top">
+          <span class="text-white">Test Series Performance</span>
+          
+        </h4>
+        <!--end::Title-->
+        <!--begin::Tabs-->
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active show text-center" data-toggle="tab" href="#chart">Comparision Charts</a>           
+          </li>
+         
+          
+        </ul>
+        <!--end::Tabs-->
+      </div>
+      <!--end::Header-->
+      <!--begin::Content-->
+      <div class="tab-content">
+        <!--begin::Tabpane-->
+        <div  class="tab-pane fade active show p-8" id="chart" role="tabpanel">
+          <div class="card card-custom gutter-b mt-5">
+
+            <div class="card-body py-0">
+
+              <div class="table-responsive" id="mychart_div">
+                <canvas id="speedChart" width="874px" height="400">
+
+                </canvas>
+              </div>
+            </div>
+
+          </div>
+         
+            
+              
+        </div>
+       
+
+                                        
+      </div>
+     
+   
+    </div>
+    <!--end::Container-->
+  </div>
+  <hr>
+  
+<div class="container">
+<div class="row justify-content-md-center">
+      
+      
+      
+    <!--table style1-->
+ <div class="card card-custom w-100 gutter-b ml-3 mr-3">
+     
+  <div class="card-body py-0">
+    <!--begin::Table-->
+    <div class="table-responsive">
+        <div  id="student_mark">
+  
+           <table id="myTable"  class="table table-head-custom table-vertical-center " id="kt_advance_table_widget_2">
+
+        
+            </table>
+
+        </div>
+
+      </div>
+     </div>
+   </div>
+</div>
+</div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    var speedCanvas = document.getElementById("speedChart");
+
+    Chart.defaults.global.defaultFontFamily = "Lato";
+    Chart.defaults.global.defaultFontSize = 18;
+
+    var dataFirst = {
+      label: "Highest Score",
+      data: {{max_scores|safe}},
+      lineTension: 0,
+      fill: false,
+      borderColor: '#152c58'
+    };
+
+    var dataSecond = {
+     label: "Lowest Score",
+     data: {{low_scores|safe}},
+     lineTension: 0,
+     fill: false,
+     borderColor: '#a6252e'
+    };
+
+    var dataThird = {
+      label: "Average Score",
+      data: {{avg_scores|safe}},
+      lineTension: 0,
+      fill: false,
+      borderColor: 'green'
+    };
+
+
+
+    var speedData = {
+      labels: {{tests|safe}},
+      datasets: [dataFirst, dataSecond,dataThird]
+     };
+
+   var chartOptions = {
+     legend: {
+     display: true,
+     position: 'top',
+     labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+   },
+   scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: '#152C58',
+                        fontSize: 18,
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#a6252e",
+                        fontSize: 14,
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }]
+            }
+  };
+
+  var lineChart = new Chart(speedCanvas, {
+    type: 'line',
+    data: speedData,
+    options: chartOptions
+  
+  });
+
+
+                $("#myTable th").remove();
+                $("#myTable tr").remove();
+               
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Test Name</th>');
+                $("#myTable").append('<th style="min-width: 120px"> Highest ScoreScore</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Average Score</th>'); 
+                $("#myTable").append('<th style="min-width: 120px">Lowest Score</th>');             
+                $("#myTable").append('</tr>');
+   
+                var test ={{tests|safe}};
+                var max_scores={{max_scores|safe}};
+                var avg_scores={{avg_scores|safe}};
+                var low_scores={{low_scores|safe}};
+
+
+                for (i = 0; i < test.length; i++) {
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);  
+                     var cell3 = row.insertCell(2);  
+                     var cell4 = row.insertCell(3);          
+                    
+                     cell1.innerHTML = test[i];
+                     cell2.innerHTML = max_scores[i];
+                     cell3.innerHTML = avg_scores[i];
+                     cell4.innerHTML = low_scores[i];
+                    
+                     
+                 }
+               
+
+
+  $("document").ready(function () {
+    
+      var myChart;
+      $('#user_select').change(function(){
+              
+          $('#user_select').blur();
+          $("canvas#speedChart").remove();
+          $("#mychart_div").append('<canvas id="speedChart" width="400" class="p-2" ></canvas>');
+          $.ajax({                       
+              url: "{% url 'ajax_load_dashboard' %}",
+              data: {'user':$(this).children("option:selected").val(),'series_id':1},                   
+              success: function (chart_data) {
+                
+                $("#myTable th").remove();
+                $("#myTable tr").remove();
+               
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Test Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Score</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Negative Score</th>');              
+                $("#myTable").append('</tr>');
+   
+
+                for (i = 0; i < chart_data['test_names'].length; i++) {
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);  
+                     var cell3 = row.insertCell(2);           
+                    
+                     cell1.innerHTML = chart_data['test_names'][i];
+                     cell2.innerHTML = chart_data['scores'][i];
+                     cell3.innerHTML = chart_data['negative_score'][i];
+                    
+                     
+                 }
+               
+
+                
+                  
+                 var ctx = document.getElementById("speedChart").getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chart_data['test_names'],
+                    datasets: [{
+                    label: 'apples',
+                    data:chart_data['scores'] ,
+                    backgroundColor: ['#097E75','#0743A4','#08599B','red','maroon','olive','magenta','yellow','violet','brown','black','pink'],
+
+                  }]
+              }
+            });
+                                                   
+            }
+      });
+  });
+     
+
+      var myChart;
+      $('#test_select').change(function(){        
+              
+          $('#test_select').blur();
+          $("canvas#speedChart").remove();
+          
+          $("#mychart_div").append('<canvas id="speedChart" width="400" class="p-2" ></canvas>');
+          $.ajax({                       
+              url: "{% url 'ajax_load_dashboard_test' %}",
+              data: {'test':$(this).children("option:selected").val(),'series_id':1},                   
+              success: function (chart_data) {
+
+                $("#myTable th").remove();
+                $("#myTable tr").remove();
+               
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Student Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Test Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Mark</th>');
+                $("#myTable").append('<th style="min-width: 120px">Negative Mark</th>');
+                $("#myTable").append('</tr>');
+   
+                
+
+                for (i = 0; i < chart_data['student'].length; i++) {
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);
+                     var cell3 = row.insertCell(2);
+                     var cell4 = row.insertCell(3);
+                    
+                     cell1.innerHTML = chart_data['student'][i];
+                     cell3.innerHTML = chart_data['scores'][i];
+                     cell2.innerHTML = chart_data['testname'];
+                     cell4.innerHTML = chart_data['negative_score'][i];
+                     
+                 }
+               
+                
+                
+                var ctx = document.getElementById("speedChart").getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chart_data['student'],
+                    datasets: [{
+                    label: 'apples',
+                    data:chart_data['scores'] ,
+                    backgroundColor: ['#097E75','#0743A4','#08599B','red','maroon','olive','magenta','yellow','violet','brown','black','pink'],
+
+                  }]
+              }
+            });
+                                                
+              }
+          });
+      });
+     
+                            
+  });
+                                  
+</script>            
+
+{% endblock %}

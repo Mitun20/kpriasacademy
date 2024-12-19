@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load check_answer_tags %}
+
+{% block content %}
+
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Results</h5>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{%url 'home' %}" class="text-muted">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{% url 'test_series' %}" class="text-muted">Test test_series</a>
+            </li>
+            <li class="breadcrumb-item">
+              {% with attempt|first as first_attempt %}	
+                  {% if first_attempt %}												
+                     <a href="{%url 'test_series_detail' first_attempt.test.test_series.id %}" class="text-muted">{{first_attempt.test.test_series.title}}</a>
+                  {% endif %}
+
+              {% endwith %}
+              
+            </li>
+
+            <li class="breadcrumb-item">
+              <a href="#" class="text-muted">
+                
+                {% with attempt|first as first_attempt %}	
+                {% if first_attempt %}												
+                  {{first_attempt.test}}   Rank</a>
+                {% endif %}
+
+            {% endwith %}
+                
+              
+            </li>
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+
+      </div>
+      <!--end::Toolbar-->
+    </div>
+
+  <hr>
+  <!--begin::Entry-->
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+     
+      {% with attempt|first as first_attempt %}	
+        {% if first_attempt %}												
+          <h1 class="text-center"> {{first_attempt.test}} Rank Details </h1> <br>
+        {% endif %}
+
+      {% endwith %}
+      
+      <div class="row justify-content-md-center">
+      
+      
+      
+      <!--table style1-->
+        <div class="card card-custom w-100 gutter-b">
+       
+        <!--begin::Body-->
+        <div class="card-body py-0">
+          <!--begin::Table-->
+          <div class="table-responsive">
+            <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+              <thead>
+                <tr class="text-uppercase">
+                  <th class="pl-0" style="min-width: 100px">Rank</th>
+                  <th class="pl-0" style="min-width: 100px">Score</th>
+                  <th class="pl-0" style="min-width: 100px">Correct</th> 
+                  <th class="pl-0" style="min-width: 100px">Incorrect</th> 
+                  <th class="pl-0" style="min-width: 100px">Attempted</th>                                
+                   
+                </tr>
+              </thead>
+              <tbody>
+
+            {% for attempt in attempt %}
+
+              {% if attempt.user == request.user %}
+                    <tr style="background-color: #f4cc7f;">
+              {% else%}
+
+                    <tr>
+              {% endif %}
+              <td class="pl-0 text-dark-75 font-weight-bolder d-block font-size-lg">
+                {{forloop.counter}}
+              </td>
+           
+               <td class="pl-0 font-weight-bolder">
+                 {{attempt.score}}
+             
+               </td>
+
+               <td class="pl-0 font-weight-bolder">
+
+                {{attempt.correct}}
+            
+              </td>
+
+               <td class="pl-0 font-weight-bolder">
+
+                {{attempt.incorrect}}
+            
+              </td>
+
+               <td class="pl-0 font-weight-bolder">
+
+                {{attempt.attempted_questions}} 
+            
+              </td>
+
+         
+            </tr>
+
+
+
+            {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!--end::Table-->
+        </div>
+        <!--end::Body-->
+      </div>
+        <!--END-->
+      </div>
+
+
+     
+    </div>
+    <!--end::Container-->
+  </div>
+  <!--end::Entry-->
+</div>
+
+
+{% endblock %}

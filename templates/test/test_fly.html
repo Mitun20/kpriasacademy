@@ -1,0 +1,32 @@
+<div class="card-header">
+      <h4>Question : {{question_no |add:1}} </h4>
+      <h3 class="card-title pt-5" id="oldmanfont">{{question.description|safe}}</h3>
+      </div>
+      <div class="card-body">
+        <form class="form">
+          <div class="form-group">
+            <div class="radio-list">
+              {% for options in question.option_set.all %}
+                <label class="radio same_line">
+                  <input type="radio" name="group" class="no_option"
+                    question="{{question.id}}" test="{{test.id}}"
+                    option="{{options.id}}" type="checkbox"
+                    value="{{options.id}}">
+
+
+                    <span></span> <h3 id="oldmanfont" class="mt-2"> {{ options.alphabet }}) {{options.description|safe}}</h3>
+                  </label>
+                
+              
+                
+            
+              {% endfor %}  
+              <input type="radio" name="group" class="no_option" value="null" style="display:none">
+                
+                
+              </div>
+            </div>
+                       
+
+           </form>
+           </div>

@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load test_due_date_tags %}
+{% load check_attempt_tags %}
+
+{% block content %}
+
+    <!--begin::Content-->
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <!--begin::Subheader-->
+        <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                <!--begin::Info-->
+                <div class="d-flex align-items-center flex-wrap mr-1">
+                    <!--begin::Page Heading-->
+                    <div class="d-flex align-items-baseline flex-wrap mr-5">
+                        <!--begin::Page Title-->
+                        <h5 class="text-dark font-weight-bold my-1 mr-5">Mains Test List</h5>
+                        <!--end::Page Title-->
+                        <!--begin::Breadcrumb-->
+                        <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                            <li class="breadcrumb-item">
+                                <a href="" class="text-muted">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="" class="text-muted">List</a>
+                            </li>
+                        </ul>
+                        <!--end::Breadcrumb-->
+                    </div>
+                    <!--end::Page Heading-->
+                </div>
+
+            </div>
+        </div>
+        <!--end::Subheader-->
+
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <div class="row">
+                
+                <div class="col-xl-12">
+                        <!--begin::List Widget 4-->
+                        <div class="card card-custom card-stretch gutter-b">
+                            <!--begin::Header-->
+                            <div class="card-header border-0">
+                               
+                                {% with assignments|first as first_assignment %}
+
+                                {% if first_assignment %}
+
+                                <h3 class="card-title font-weight-bolder text-dark">{{first_assignment.test_series}} Mains Test</h3>
+                                    <h3  class="card-title font-weight-bolder text-dark float-right">
+                                     <a style="color: blue;" href="{% url 'mains_performance' first_assignment.test_series.id  %}">
+                                         <u> View Performance</u>
+
+                                     </a>    
+                                 </h3>                                  
+                                    
+                                {% endif %}                                                 
+                                                 
+                             {% endwith %}                  
+                                
+                            </div>
+                            <!--end::Header-->
+
+                            <br>
+                            <h3 class="ml-2">Instruction:</h3>
+
+
+
+                            
+                        <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+                            <tr>
+                              <th> Test No.</th>
+                              <th>Date</th>
+                              <th>Question Paper</th>
+                              <th style="width: 35%">Answer Script</th>
+                              <th>Status</th>
+                              <th>Score</th>
+                              <th>Discussion Video</th>
+                            </tr>
+
+                            
+
+                            {% for assignment in assignments %}
+
+                            <tr>
+
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{assignment.open_date|date:"d.n.Y"}}                                   
+                                </td>                               
+
+                                {% now "Y-m-d" as todays_date %}
+                                
+                                {% if todays_date  >= assignment.open_date|date:"Y-m-d" %}
+
+
+                                <td>
+
+                                        Qp {{forloop.counter}} -
+
+                                        {% for file in assignment.afile_set.all %}
+                                            <a href="{{file.afile_url}}" download> 
+                                               Download 
+                                            </a>
+                                        {% endfor %}
+        
+
+                                </td>
+
+                                {%  mains_submitted_file_download assignment.id  request.user as submission  %}
+
+                                {% if  submission.status == 'A' %}
+                                        <td>
+
+                                            {% if submission.corrected_answer_sheet %}
+
+                                            <a href="/media/{{submission.corrected_answer_sheet}}" download>
+                                    
+                                                Download
+                                            
+                                            </a>
+
+
+                                            {% else %}
+                                         
+                                                -
+                                            {% endif %}
+
+
+                                        </td>
+
+
+                                        <td>Evaluated</td>
+
+                                        <td>{{submission.marks}}</td>
+
+                                        <td>{% if submission.assignment.discussion_video_link %} <a href="{{submission.assignment.discussion_video_link}}">Discussion Link</a>  {% else %} - {% endif %}</td>
+
+                                {% elif submission.status == 'S' %}
+
+                                 <td>
+                                    <form assignment_id="{{assignment.id}}" class="fileform" enctype="multipart/form-data" method="post"  >
+
+                                        {% csrf_token %} 
+                                        <input class="{{assignment.id}}" value="{{assignment.id}}" required name="file" type="file">     
+                                        <input name="assignment_id"  value="{{assignment.id}}" style="display: none;">     
+                                        <input assignment_id="{{assignment.id}}"   class="btn mt-3 text-white uploading" type="submit" style="background-color: #152c58;" value="Upload">
+         
+                                     </form>
+
+
+
+                                 </td>
+
+                                 <td>Not Evaluated </td>
+                                 <td>Not Evaluated</td>
+                                 <td>{% if submission.assignment.discussion_video_link %} <a href="{{submission.assignment.discussion_video_link}}">Discussion Link</a>  {% else %} - {% endif %}</td>
+                                 
+
+
+                                 {% else %}
+
+                                 <td>
+
+
+                                    <form assignment_id="{{assignment.id}}"  enctype="multipart/form-data" class="fileform" method="post"  >
+
+                                        {% csrf_token %} 
+                                        <input class="{{assignment.id}}" value="{{assignment.id}}" required name="file" type="file">     
+                                        <input name="assignment_id"   value="{{assignment.id}}" style="display: none;">     
+                                        <input  assignment_id="{{assignment.id}}"  class="btn mt-3 text-white uploading" type="submit" style="background-color: #152c58;" value="Upload">
+         
+                                     </form>
+
+
+
+                                 </td>
+
+                                 <td> Yet to Submit </td>
+                                 <td>-</td>
+                                 <td>-</td>
+
+
+
+                                 {% endif %}
+
+                            
+
+                                 {% else %}
+
+                                    <td>Not Opened</td>
+                                    <td>Not Opened</td>
+                                    <td>Yet to Submit</td>
+                                    <td>-</td>
+                                    <td>-</td>
+
+                                {% endif %}
+
+                             </tr>
+                            {% endfor %}
+
+
+                           
+                          </table>
+                        <!--end:List Widget 4-->
+                            
+                        </div>
+
+                    </div>                   
+                 
+                
+                </div>
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+    <!--end::Content-->
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Please Wait</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="attemptdetails" class="container">
+          <div class="modal-body" id="append_details">
+            <h5>Uploading...!</h5>                  
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>   
+
+    $('.fileform').submit(function(){
+
+     valid = true;
+     var btn = $(this).attr("assignment_id");
+     file=".".concat(btn);
+     if($(file).val() != ''){        
+        $("#exampleModal").modal();
+        valid =  True;        
+    }
+
+    return valid
+});
+
+    </script>
+
+{% endblock %}

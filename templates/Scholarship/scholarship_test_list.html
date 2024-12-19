@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+   <!--begin::Entry-->
+   <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+
+        <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                <!--begin::Info-->
+                <div class="d-flex align-items-center flex-wrap mr-1">
+                    <!--begin::Page Heading-->
+                    <div class="d-flex align-items-baseline flex-wrap mr-5">
+                        <!--begin::Page Title-->
+
+                      <h5 class="text-dark font-weight-bold my-1 mr-5">Scholarship Test</h5>
+                        <!--end::Page Title-->
+                      <!--begin::Breadcrumb-->
+                      <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'home'  %}" class="text-muted">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{%url 'scholarship' %}" class="text-muted">Scholarship Test</a>
+                        </li>
+                     
+                      </ul>
+                    <!--end::Breadcrumb-->
+                       
+                    </div>
+                    <!--end::Page Heading-->
+                </div>
+                <!--end::Info-->
+                <!--begin::Toolbar-->
+                <div class="d-flex align-items-center">
+                    <!--begin::Actions-->
+                    <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Back </a>
+                    <!--end::Actions-->
+                    <!--begin::Dropdown-->
+                
+                    <!--end::Dropdown-->
+                </div>
+                <!--end::Toolbar-->
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+
+            {% for test in test %}
+            <div class="col-lg-6">
+                <!--begin::Mixed Widget 14-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0 ">
+                        <h3 class="card-title font-weight-bolder">{{test}}</h3>
+                        
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="container">
+                        
+                        
+                            
+                            
+                                {{test.description|safe}}
+
+                                Start date:  {{test.open_date}} <br>
+                                Total no Questions : {{test.total_no_questions}} <br>
+                                Total Marks : {{test.total_marks}} <br>
+                                Duration :{{test.duration_in_minutes}} <br><br>
+                                
+                            
+                           <a href="{% url 'scholarship_test' test.id %}">
+                            <h4 class=" btn  btn-success btn-shadow-hover font-weight-bolder w-100 py-3"> Take Test </h4>
+                  
+                        </a>
+                 
+
+                       
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Mixed Widget 14-->
+            </div>
+
+            {% empty %}
+
+            <h1>No Scholarship Test Available </h1>
+            {% endfor %}
+            
+        </div>
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Entry-->
+
+
+
+
+{% endblock %}

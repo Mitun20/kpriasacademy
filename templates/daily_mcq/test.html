@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <a href="#"><h5 class="text-dark font-weight-bold my-1 mr-5">Daily Mcq</h5></a>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{% url 'home'  %}" class="text-muted">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{% url 'daily_mcq'  %}" class="text-muted">Month wise</a>
+            </li>
+            <li class="breadcrumb-item">
+             
+              
+                <a href="{% url 'daily_mcq_filter' test.open_date|date:'n' test.open_date|date:'Y'  %}" class="text-muted">{{ test.open_date|date:'F, Y' }} </a>
+                            
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#" class="text-muted">{{ test.open_date|date:'j,F,Y' }}</a>
+            </li>
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+      <!--begin::Toolbar-->
+      <div class="d-flex align-items-center mt-2">
+        <!--begin::Actions-->
+       
+  
+        <!--end::Actions-->
+        <!--begin::Dropdown-->
+      
+        <!--end::Dropdown-->
+      </div>
+      <!--end::Toolbar-->
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+  <h1 class="text-center">{{test}}</h1>
+
+
+  <br>
+
+  <p value="{{test.id}}" id="test_id" style="display: none;"></p>
+  <!--begin::Entry-->
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+     <div class="row">
+
+      <div class="col-xl-12">
+        <div class="card card-custom gutter-b example example-compact">
+          <div id="ques_window">
+          <div class="card-header">
+
+            {% for question in questions %}
+            
+
+               
+
+
+              <h4 class="pt-5"> Question {{forloop.counter}} :</h4>
+              <h3>{{question.description|safe}}</h3>
+              
+            </div>
+               <div class="card-body">
+              <form class="form">
+             <div class="form-group">
+                
+                  <div class="radio-list">
+                    {% for options in question.option_set.all %}
+
+                    <label class="radio same_line">
+                    <input type="radio" name="{{question.id}}" 
+                    question="{{question.id}}" test="{{test.id}}"
+                    option="{{options.id}}" type="checkbox"
+                    value="{{options.id}}">
+
+                    <span></span>
+                    <div style="display: block;" >
+
+                    <h3 id="oldmanfont">
+                        {{ options.alphabet }})  {{options.description|safe}}
+                    </h3>
+                    </div>
+                  
+                  </label>
+  
+                
+                  {% endfor %}  
+
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <a href="#"  ques_no={{question.id}} class=" clear_option btn btn-primary " style="float:left;">Clear this Selection 
+                      </a>
+                    </div>
+                    <div class="col-sm-8">
+
+                    </div>
+                  </div>
+   
+                  </div>
+                
+                    
+                </div>
+               
+                <hr>
+
+            
+                
+              {% endfor %}            
+             
+
+                </form>
+             </div>
+
+            </div>
+             <div class="card-footer">
+              <button id="attempted_details" class="btn btn-success mr-2 float-right" type="submit" data-toggle="modal" data-target="#exampleModal" >
+                Submit
+              </button>
+              
+              </div>
+             
+        </div>
+      </div>
+      
+     
+      
+    
+    </div>	
+      
+      
+    </div>
+    <!--end::Container-->
+  </div>
+  <!--end::Entry-->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SUBMIT TEST</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="attemptdetails" class="container">
+        <div class="modal-body" id="append_details">
+          
+  
+        
+          
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="quizdetail">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script>
+
+
+  
+$("#attempted_details").click(function() {
+  var quizarray = JSON.parse(localStorage.getItem("quizarray"));
+  var lim = quizarray.length; 
+
+  
+          $("#append_details").remove();
+          $("#attemptdetails").append('<div id="append_details">');
+
+ 
+         $("#append_details").append('<h3>');
+        $("#append_details").append('ATTEMPTED &nbsp;&nbsp;&nbsp; &nbsp; : &nbsp; ');
+      
+      $("#append_details").append(lim);
+      $("#append_details").append('<br>');
+      $("#append_details").append('<br>');
+      $("#append_details").append('UNATTEMPTED &nbsp;: &nbsp;');
+      $("#append_details").append({{questions_count}}-lim);
+       
+      $("#append_details").append('</h3>');
+      $("#append_details").append('</div>');    
+ 
+});
+
+
+  
+  window.history.forward(); 
+  function noBack() { 
+      window.history.forward(); 
+  } 
+
+
+
+  $('input').change(function()
+  {
+    var value = $( "input:checked" ).attr("question");
+    g=parseInt($( "input:checked" ).attr("question"));  
+    $("a[questionid="+g +"]").css({"background":"#366CF3"});
+
+  });
+
+
+
+  //if answer selected change color to green
+
+  var quizarray = JSON.parse(localStorage.getItem("quizarray"));
+  
+  if(quizarray!=null)
+  {
+    var lim = quizarray.length;  
+    for (var i = 0; i < lim; i++)
+     {
+        $("a[questionid="+ quizarray[i].questionid +"]").css({"background":"#366CF3"});
+     }
+  
+   }
+</script>
+
+
+
+</body>
+<script type="text/javascript" src="{% static '/js/mcq_quiz_detail.js' %}"></script>
+</html>
+{% endblock %}

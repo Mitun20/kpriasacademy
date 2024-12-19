@@ -1,0 +1,615 @@
+{% extends 'base.html' %}
+{% load check_attempt_tags %}
+{% block content %}
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Home</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-muted">Home</a>
+                        </li>
+                        
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+         <div class="row">
+
+
+            <div class="col-xl-4">
+                <!--begin::List Widget 17-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Header-->
+                    <div class="card-header border-0 pt-5">
+
+                       
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label font-weight-bolder text-dark">Courses   
+                                        
+                                        <a target="_blank"  style="color: #348ec3;"  href="https://kpriasacademy.in/product/integrated-prelims-cum-mains-guidance-programme/">View Details</a>
+               
+                       
+    
+                                       
+                                    </span>
+                                    
+                                </h3>                              
+
+                              
+                        
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-1">
+                        <!--begin::Item-->
+
+                    {% with enrolled_courses|first as first_course %}	
+                        {% if first_course %}												
+                            <h5>Enrolled</h5>
+
+                        {% else %}
+                            <h5> Not Enrolled</h5>
+                        {% endif %}
+
+                    {% endwith %}
+                        
+                    
+
+                     {% for enrolled_course in enrolled_courses %}
+                        <div class="d-flex align-items-center mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                <span class="symbol-label">
+                                    <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-09-15-014444/theme/html/demo1/dist/../src/media/svg/icons/Files/Folder.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"/>
+                                            <path d="M3.5,21 L20.5,21 C21.3284271,21 22,20.3284271 22,19.5 L22,8.5 C22,7.67157288 21.3284271,7 20.5,7 L10,7 L7.43933983,4.43933983 C7.15803526,4.15803526 6.77650439,4 6.37867966,4 L3.5,4 C2.67157288,4 2,4.67157288 2,5.5 L2,19.5 C2,20.3284271 2.67157288,21 3.5,21 Z" fill="#000000" opacity="0.3"/>
+                                        </g>
+                                    </svg><!--end::Svg Icon--></span>
+                                </span>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column font-weight-bold">
+                                <a href="{% url 'course_detail' enrolled_course.id  %}" class="text-dark text-hover-primary font-size-lg">{{enrolled_course}}</a>
+                                                                                        
+                               
+
+                                <div class="row">
+                                    <div class="col-md-12 text-muted"> 
+                                        
+                                        <a class="text-dark text-hover-primary mb-1 text-muted" href="{% url 'course_detail' enrolled_course.id  %}">
+                                            View Details
+                                        </a> 
+
+
+                                         {% if enrolled_course.lesson_plan %}
+                                        
+                                           | <a download class="text-dark text-hover-primary mb-1 text-muted" href="/media/{{enrolled_course.lesson_plan}}">Brochure </a>
+
+                                         {% endif %} 
+                                         
+                                         
+                                        
+                                          |   <a  class="text-dark text-hover-primary mb-1 text-muted" href="{% url 'course_schedule' enrolled_course.id %}"> Live</a>
+
+                                         
+                                    
+                                    </div>
+                                  
+                                    
+                                  </div>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+
+                     {% empty%}
+                     <p>No Enrolled Courses Available</p>
+                     {% endfor%}
+                        <!--end::Item-->
+
+
+                        {% with courses|first as first_course %}	
+                        {% if first_course %}
+
+                        <br>
+                        <h5>Available Courses</h5>
+
+                        {% for course in courses %}
+                           <div class="d-flex align-items-center mb-10">
+                               <!--begin::Symbol-->
+                               <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                   <span class="symbol-label">
+                                    <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-09-15-014444/theme/html/demo1/dist/../src/media/svg/icons/Files/Folder.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"/>
+                                            <path d="M3.5,21 L20.5,21 C21.3284271,21 22,20.3284271 22,19.5 L22,8.5 C22,7.67157288 21.3284271,7 20.5,7 L10,7 L7.43933983,4.43933983 C7.15803526,4.15803526 6.77650439,4 6.37867966,4 L3.5,4 C2.67157288,4 2,4.67157288 2,5.5 L2,19.5 C2,20.3284271 2.67157288,21 3.5,21 Z" fill="#000000" opacity="0.3"/>
+                                        </g>
+                                    </svg><!--end::Svg Icon--></span>
+                                   </span>
+                               </div>
+                               <!--end::Symbol-->
+                               <!--begin::Text-->
+                               <div class="d-flex flex-column font-weight-bold">
+                                   <a href="#" class="text-dark text-hover-primary font-size-lg">{{course}}</a>
+                                                                                           
+                                   <div class="row">
+                                    <div class="col-md-12 text-muted"> 
+                                        
+                                     
+
+                                         {% if course.lesson_plan %}
+                                        
+                                            <a download  class="text-dark text-hover-primary mb-1 text-muted" href="/media/{{course.lesson_plan}}"> Brochure </a>
+
+                                         {% endif %}  
+                                    
+                                    </div>
+                                  
+                                    
+                                  </div>
+                                       
+
+                               </div>
+                               <!--end::Text-->
+                           </div>
+
+                        {% empty%}
+                        <p>No Courses</p>
+                        {% endfor%}
+
+
+                        {% endif %}
+
+                        {% endwith %}
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                
+                <!--end::List Widget 17-->
+            </div>
+        
+        
+            <div class="col-xl-4">
+                    <!--begin::List Widget 17-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+
+                
+                                    <h3 class="card-title align-items-start flex-column">
+                                        <span class="card-label font-weight-bolder text-dark">Prelims Test Series
+
+                                            <a target="_blank" style="color: #348ec3;"  href="https://kpriasacademy.in/product/prelims-test-series/">View Details</a>
+
+                                        </span>                                      
+                                        
+                                    </h3>
+                        
+
+                         
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-1">
+                            <!--begin::Item-->
+                       
+
+                     {% with enrolled_serieses|first as first_series %}	
+                        {% if first_series %}												
+                            <h5>Enrolled</h5>
+
+                        {% else %}
+                            <h5> Not Enrolled</h5>
+                        {% endif %}
+
+                     {% endwith %}
+
+                         {% for enrolled_series in enrolled_serieses %}
+                            <div class="d-flex align-items-center mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                    <span class="symbol-label">
+                                        <span class="svg-icon svg-icon-xl svg-icon-primary">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                                            <svg xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="27" height="27"></rect>
+                                                    <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+                                                    <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column font-weight-bold">
+                                    <a href="{% url 'test_series_detail' enrolled_series.id  %}" class="text-dark text-hover-primary font-size-lg">{{enrolled_series}}</a>
+                                   
+
+                                <div class="row">
+                                    <div class="col-md-12 text-muted"> 
+                                        
+                                        <a class="text-dark text-hover-primary mb-1 text-muted" href="{% url 'test_series_detail' enrolled_series.id  %}">
+                                            Take Test
+                                        </a>
+
+                                         {% if enrolled_series.lesson_plan %}
+                                        
+                                           | <a download class="text-dark text-hover-primary mb-1 text-muted" href="/media/{{enrolled_series.lesson_plan}}"> Brochure </a>
+
+                                         {% endif %}  
+                                    
+                                    </div>
+                                  
+                                    
+                                  </div>
+                                        
+                                      
+
+                                </div>
+                                <!--end::Text-->
+                            </div>
+
+                         {% empty%}
+                         <p>No Test Series Enrolled</p>
+                         {% endfor%}
+                            <!--end::Item-->
+
+
+                        {% with serieses|first as first_series %}	
+                            {% if first_series %}
+
+                      
+                            <br>
+                            <h5>Available Test Series</h5>
+                            
+                         {% for series in serieses %}
+                         <div class="d-flex align-items-center mb-5">
+                             <!--begin::Symbol-->
+                             <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                 <span class="symbol-label">
+                                     <span class="svg-icon svg-icon-xl svg-icon-primary">
+                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                                         <svg xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                 <rect x="0" y="0" width="27" height="27"></rect>
+                                                 <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+                                                 <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+                                             </g>
+                                         </svg>
+                                         <!--end::Svg Icon-->
+                                     </span>
+                                 </span>
+                             </div>
+                             <!--end::Symbol-->
+                             <!--begin::Text-->
+                             <div class="d-flex flex-column font-weight-bold">
+                                 <a href="#" class="text-dark text-hover-primary font-size-lg">{{series}}</a>
+                               
+                                 <div class="row">
+                                    <div class="col-md-12 text-muted"> 
+                                        
+                                      
+
+                                         {% if series.lesson_plan %}
+                                        
+                                            <a download  class="text-dark text-hover-primary mb-1 text-muted" href="/media/{{series.lesson_plan}}"> Brochure </a>
+
+                                         {% endif %}  
+                                    
+                                    </div>
+                                  
+                                    
+                                  </div>
+                            
+                                     
+                                   
+
+                             </div>
+                             <!--end::Text-->
+                         </div>
+
+                      {% empty%}
+                  
+                      {% endfor%}
+                         
+
+                      {% endif %}
+
+                      {% endwith %}
+ 
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    
+                    <!--end::List Widget 17-->
+                </div>
+
+                <div class="col-xl-4">
+                    <!--begin::List Widget 17-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label font-weight-bolder text-dark">Mains Test Series  
+
+                                    <a target="_blank" style="color: #348ec3;" href="https://kpriasacademy.in/product/main-test-series/">View Details</a>
+                                </span>
+                              
+                            </h3>
+                            
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-1">
+                            <!--begin::Item-->
+                        {% with enrolled_mains_tests|first as first_test %}	
+                            {% if first_test %}												
+                                <h5>Enrolled</h5>
+    
+                            {% else %}
+                                <h5> Not Enrolled</h5>
+                            {% endif %}
+    
+                         {% endwith %}
+
+                         {% for enrolled_mains_test in enrolled_mains_tests %}
+                            <div class="d-flex align-items-center mb-5">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                    <span class="symbol-label">
+                                        <span class="svg-icon svg-icon-xl svg-icon-primary">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                                            <svg xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="27" height="27"></rect>
+                                                    <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+                                                    <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column font-weight-bold">
+                                    <a href="{% url 'mains_test_series_detail' enrolled_mains_test.id  %}" class="text-dark text-hover-primary font-size-lg">{{enrolled_mains_test}}</a>
+                                   
+                                    <div class="row">
+                                        <div class="col-md-12 text-muted"> 
+                                            
+                                            <a class="text-dark text-hover-primary mb-1 text-muted" href="{% url 'mains_test_series_detail' enrolled_mains_test.id  %}">
+                                                Take Test 
+                                             </a> 
+
+                                             {% if enrolled_mains_test.lesson_plan %}
+                                            
+                                               | <a download class="text-dark text-hover-primary mb-1 text-muted" href="/media/{{enrolled_mains_test.lesson_plan}}"> Brochure </a>
+
+                                             {% endif %}  
+                                        
+                                        </div>
+                                      
+                                        
+                                      </div>
+                                   
+                                   
+                                    
+                                        
+                                      
+
+                                </div>
+                                <!--end::Text-->
+                            </div>
+
+                         {% empty%}
+                         <p>No Test Series Enrolled</p>
+                         {% endfor%}
+                            <!--end::Item-->
+
+
+                        {% with mains_tests|first as first_mains %}	
+                            {% if first_mains %}
+
+
+
+                            
+                            <br>
+                            <h5>Available Test Series</h5>
+                                                 
+                         {% for mains_test in mains_tests %}
+                         <div class="d-flex align-items-center mb-5">
+                             <!--begin::Symbol-->
+                             <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                 <span class="symbol-label">
+                                     <span class="svg-icon svg-icon-xl svg-icon-primary">
+                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                                         <svg xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                 <rect x="0" y="0" width="27" height="27"></rect>
+                                                 <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+                                                 <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+                                             </g>
+                                         </svg>
+                                         <!--end::Svg Icon-->
+                                     </span>
+                                 </span>
+                             </div>
+                             <!--end::Symbol-->
+                             <!--begin::Text-->
+                             <div class="d-flex flex-column font-weight-bold">
+                                 <a href="#" class="text-dark text-hover-primary font-size-lg">{{mains_test}}</a>
+                                 <div class="row">
+                                    <div class="col-md-12 text-muted"> 
+                                        
+                                      
+                                         {% if mains_test.lesson_plan %}
+                                        
+                                           <a download  class="text-dark text-hover-primary mb-1 text-muted" href="/media/{{mains_test.lesson_plan}}"> Brochure </a>
+
+                                         {% endif %}  
+                                    
+                                    </div>
+                                  
+                                    
+                                  </div>
+                            
+                                     
+                                   
+
+                             </div>
+                             <!--end::Text-->
+                         </div>
+
+                      {% empty%}
+
+                   
+                  
+                      {% endfor%}
+                       
+                            
+                            
+                             
+                     {% endif %}
+
+                    {% endwith %}
+
+
+
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    
+                    <!--end::List Widget 17-->
+                </div>
+
+
+
+              
+                
+                <div class="col-xl-4">
+                    <!--begin::List Widget 17-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label font-weight-bolder text-dark">Daily MCQ</span>
+                                
+                            </h3>
+                            
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-1">
+                            <!--begin::Item-->
+                       
+                         {% for daily_mcq in daily_mcq %}
+                            <div class="d-flex align-items-center mb-10">
+                                <!--begin::Symbol-->
+                                <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                    <span class="symbol-label">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-09-15-014444/theme/html/demo1/dist/../src/media/svg/icons/Media/Repeat.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"/>
+                                                <path d="M12,8 L8,8 C5.790861,8 4,9.790861 4,12 L4,13 C4,14.6568542 5.34314575,16 7,16 L7,18 C4.23857625,18 2,15.7614237 2,13 L2,12 C2,8.6862915 4.6862915,6 8,6 L12,6 L12,4.72799742 C12,4.62015048 12.0348702,4.51519416 12.0994077,4.42878885 C12.264656,4.2075478 12.5779675,4.16215674 12.7992086,4.32740507 L15.656242,6.46136716 C15.6951359,6.49041758 15.7295917,6.52497737 15.7585249,6.56395854 C15.9231063,6.78569617 15.876772,7.09886961 15.6550344,7.263451 L12.798001,9.3840407 C12.7118152,9.44801079 12.607332,9.48254921 12.5,9.48254921 C12.2238576,9.48254921 12,9.25869158 12,8.98254921 L12,8 Z" fill="#000000"/>
+                                                <path d="M12.0583175,16 L16,16 C18.209139,16 20,14.209139 20,12 L20,11 C20,9.34314575 18.6568542,8 17,8 L17,6 C19.7614237,6 22,8.23857625 22,11 L22,12 C22,15.3137085 19.3137085,18 16,18 L12.0583175,18 L12.0583175,18.9825492 C12.0583175,19.2586916 11.8344599,19.4825492 11.5583175,19.4825492 C11.4509855,19.4825492 11.3465023,19.4480108 11.2603165,19.3840407 L8.40328311,17.263451 C8.18154548,17.0988696 8.13521119,16.7856962 8.29979258,16.5639585 C8.32872576,16.5249774 8.36318164,16.4904176 8.40207551,16.4613672 L11.2591089,14.3274051 C11.48035,14.1621567 11.7936615,14.2075478 11.9589099,14.4287888 C12.0234473,14.5151942 12.0583175,14.6201505 12.0583175,14.7279974 L12.0583175,16 Z" fill="#000000" opacity="0.3"/>
+                                            </g>
+                                        </svg><!--end::Svg Icon--></span>
+                                    </span>
+                                </div>
+                                <!--end::Symbol-->
+                                <!--begin::Text-->
+                                <div class="d-flex flex-column font-weight-bold">
+                                   
+
+                                    {%  check_attempt_daily_test daily_mcq.id request.user as attempted %} 
+                
+                                    {% if attempted %}
+                                    <a href="{% url 'daily_mcq_answer' daily_mcq.id  %}" class="text-dark text-hover-primary font-size-lg">{{daily_mcq}}</a>
+                                        
+                                    
+
+                                    <div class="row pl-3 text-muted">                                                         
+                                        <p class="text-dark text-hover-primary mb-1 text-muted" href="#">
+                                                       Date: {{daily_mcq.open_date|date:"j,M,Y"}} 
+                                        </p> &nbsp; | &nbsp;
+                                              
+                                        <a href="{% url 'daily_mcq_answer' daily_mcq.id  %}" class="text-dark text-hover-primary font-size-lg text-muted">View Result</a>
+                                        
+                                    </div>
+                                    {% else %}
+
+                                    <a href="{% url 'mcq_test' daily_mcq.id  %}" class="text-dark text-hover-primary font-size-lg">{{daily_mcq}}</a>
+                                        
+                                    
+                                    <div class="row pl-3 text-muted">                                                         
+                                          <p class="text-dark text-hover-primary mb-1 text-muted" href="#">
+                                                       Date: {{daily_mcq.open_date|date:"j,M,Y"}} 
+                                          </p> &nbsp; | &nbsp;
+                                           
+                    
+                                          <a class="text-dark text-hover-primary mb-1 text-muted" href="{% url 'mcq_test' daily_mcq.id  %}">
+                                              Take Test 
+                                          </a> 
+                                     </div>
+                    
+                                    {% endif %}
+
+         
+
+                                </div>
+                                <!--end::Text-->
+                            </div>
+
+                         {% empty%}
+                         <p>No Daily MCQ Available</p>
+                         {% endfor%}
+                            <!--end::Item-->
+                         
+
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    
+                    <!--end::List Widget 17-->
+                </div>
+            
+          </div>	
+            
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+{% endblock %}

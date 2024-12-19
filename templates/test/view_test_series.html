@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load test_due_date_tags %}
+{% load check_attempt_tags %}
+
+
+{% block content %}
+
+
+	<!--begin::Content-->
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <!--begin::Subheader-->
+        <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                <!--begin::Info-->
+                <div class="d-flex align-items-center flex-wrap mr-1">
+                    <!--begin::Page Heading-->
+                    <div class="d-flex align-items-baseline flex-wrap mr-5">
+                        <!--begin::Page Title-->
+                        <h5 class="text-dark font-weight-bold my-1 mr-5"> Test List</h5>
+                        <!--end::Page Title-->
+                        <!--begin::Breadcrumb-->
+                        <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                            <li class="breadcrumb-item">
+                                <a href="" class="text-muted">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="" class="text-muted">List</a>
+                            </li>
+                        </ul>
+                        <!--end::Breadcrumb-->
+                    </div>
+                    <!--end::Page Heading-->
+                </div>
+                <!--end::Info-->
+             
+            </div>
+        </div>
+        <!--end::Subheader-->
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <div class="row">
+                
+                <div class="col-xl-6">
+                        <!--begin::List Widget 4-->
+                        <div class="card card-custom card-stretch gutter-b">
+                            <!--begin::Header-->
+                            <div class="card-header border-0">
+                                <h3 class="card-title font-weight-bolder text-dark">Test</h3>
+
+                                {% with test|first as first_test %}
+
+                                   {% if first_test %}
+                                       <h3  class="card-title font-weight-bolder text-dark float-right">
+                                        <a style="color: blue;" href="{% url 'series_performance' first_test.test_series.id  %}">
+                                            <u> View Performance</u>
+
+                                        </a>    
+                                    </h3> 
+                                       
+                                   {% endif %}
+													
+													
+								{% endwith %}
+												
+                               
+                                      
+                                 </a>
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Body-->
+                            <div class="card-body pt-2">
+                                <!--begin::Item-->
+
+                                {% for test in test %}
+                                <div class="d-flex align-items-center mt-3">
+                                    
+                                    <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-xl svg-icon-primary">
+                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                                                <svg xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                                        <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+                                                        <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+                                                    </g>
+                                                </svg>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <!--begin::Text-->
+                                    <div class="d-flex flex-column flex-grow-1">
+                                    
+                                        {% if test.id|check_due_date:request.user == "Over Due"  %}
+
+                                              <p  class="text-dark-75 text-hover-primary  font-weight-bold font-size-lg mb-1">{{test}}</p>
+                                      
+
+                                              <p class="text-muted">Over Due </p>
+
+                                        {% elif test.id|check_due_date:request.user == "Not Opened"  %}
+
+
+                                               <p  class="text-dark-75 text-hover-primary text-muted font-weight-bold font-size-lg mb-1">{{test}}</p>
+                                              
+                                               <div class="row">
+                                                <div class="col-md-7 text-muted"> {{test.open_date}} | {{test.duration_in_minutes}} mins </div>
+                                                <div class="col-md-5 text-muted"> {{test.total_marks}} marks | {{test.total_no_questions}} questions</div>
+                                                
+                                              </div>
+
+                                        {% elif test.id|check_testseries_test_attempt:request.user == "Attended"  %}
+
+
+                                              <p  class="text-dark-75 text-hover-primary text-muted font-weight-bold font-size-lg mb-1">{{test}}</p>
+                                             
+                                              <div class="row">
+                                               <div class="col-md-7 text-muted"> {{test.open_date}}</div>
+
+                                               
+                                                     <div class="col-md-5 text-muted">
+                                                        <a class="text-muted" href="{% url 'view_result' test.id %}"> View Result</a>
+
+                                                    </div>
+                                                      
+                                               
+                                             </div>
+
+                
+                                         {% else %}
+                                        
+                                               <a href="{% url 'view_instruction' test.id %}" >
+                                                     {{test}}
+                                               </a>      
+
+                                            <div class="row">
+                                                <div class="col-md-7 text-muted"> {{test.open_date}} | {{test.duration_in_minutes}} mins </div>
+                                                <div class="col-md-5 text-muted"> {{test.total_marks}} marks | {{test.total_no_questions}} questions</div>
+                                                
+                                              </div>
+            
+                                        {% endif %}
+                                       
+                                       
+                                       
+                                       
+                                        
+                                    </div>
+                                    <!--end::Text-->
+                                
+                                </div>
+                                <!--end:Item-->
+                                {% empty %}
+
+                                No Test Available
+
+                                {% endfor %}
+                               
+                                <!--end::Item-->
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                        <!--end:List Widget 4-->
+                    </div>
+                    
+                  
+                
+                
+                </div>
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+    <!--end::Content-->
+
+
+{% endblock %}

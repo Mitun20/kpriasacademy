@@ -1,0 +1,50 @@
+ {% with questions|first as first_question %}	
+   {% if first_question %}												
+   <table id="table_id" class="table" style="display: block;height:250px;overflow-y: scroll;width: 100%;">
+    
+    <thead  style="width: 100%;">
+        <tr >
+          <th>Question Name</th>
+          <th>Question</th>
+          <th>Option</th>
+   
+        </tr>
+      </thead>
+  {% endif %}
+ {% endwith %}
+    
+    
+    {% for question in questions %}
+
+  
+      <tr id={{question.id}}>
+      
+        <td >{{question.name|safe}}</td>
+        <td>{{question.description|safe}}</td>
+        <td>
+
+            {% for options in question.option_set.all %}
+
+            <span class="font-weight-bolder d-block font-size-lg">
+              {{options.description|safe}}  
+              </span>
+            {% endfor %}  
+        </td>    
+      </tr>
+
+   {% endfor %}
+
+
+
+  {% with questions|first as first_question %}	
+   {% if first_question %}												
+     </table>
+   
+     
+   {% endif %}
+  {% endwith %}
+  
+
+
+
+

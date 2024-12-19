@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load check_answer_tags %}
+
+{% block content %}
+
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Course</h5>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{% url 'home'  %}" class="text-muted">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{% url 'course'  %}" class="text-muted">Course</a>
+            </li>
+
+            <li class="breadcrumb-item">
+              <a href="{% url 'course_detail' attempt.test.course_part.course.id %}" class="text-muted">{{attempt.test.course_part.course}}</a>
+            </li>
+
+            <li class="breadcrumb-item">
+              <a href="{% url 'course_view_result' attempt.test.id %}" class="text-muted">Result</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="" class="text-muted"> Answer</a>
+            </li>
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+    </div>
+  </div>
+
+  <br>
+
+<h1 class="text-center ">{{attempt.test}}</h1>
+
+ {% for question in question %}
+
+ <div class="row container">                    
+  <div class="card w-100  ml-3 m-2 p-2 ">
+    <div class="ml-2 mt-2">
+        <h5>Question: {{forloop.counter}}</h5>
+        <ul>
+            <span class="card-title">{{question.description|safe}}
+        </ul>
+
+        <h5>Options:</h5>
+        
+            <ul>
+            {% for options in question.option_set.all %}
+              
+            <span>   {{options.description|safe}}	</span>
+                  
+            {% endfor %}
+            </ul>
+        
+
+            
+        <h5 style="color:#a6252e"> You Answered:</h5> 
+        <ul>                                         
+            <span style="color:#a6252e">                       
+                {%  check_answer question.id request.user attempt as attempted_question %} 
+                
+                {% if attempted_question %}
+
+                      {{attempted_question.option.description|safe}}
+
+                {% else %}
+
+                    <p>Not attempted</p>
+
+                {% endif %}
+
+               
+
+            </span>    
+        </ul>
+
+        <h5 style="color:#a6252e">Correct Answer :</h5>  
+        <ul>
+            <span style="color:#a6252e">                
+                {{question.correct_option.description|safe}}
+            </span>
+        </ul>  
+      </div>
+    </div>
+
+  </div>
+
+{% endfor %}
+
+
+{% endblock %}

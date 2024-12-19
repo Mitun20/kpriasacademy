@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load check_answer_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+    <div class="col-sm-12 text-center">
+   
+        <h1>You already started the test <u>{{old_test.test}}</u> </h1>
+        <br>
+        <h6 >So you could not attend the new test.</h6>
+
+        {% if old_test.test.course_part %}
+            <a href="{% url 'course_test' old_test.test.id %}">
+               <button class="btn  btn-success btn-shadow-hover font-weight-bolder py-3">Go to ongoing test</button>
+            </a>
+        {% elif  old_test.test.daily_mcq %}
+
+            <a href="{% url 'mcq_test' old_test.test.id %}">
+               <button class="btn  btn-success btn-shadow-hover font-weight-bolder py-3">Go to ongoing test</button>
+            </a>
+
+        {% elif  old_test.test.scholarship_test %}
+
+            <a href="{% url 'scholarship_test' old_test.test.id %}">
+               <button class="btn  btn-success btn-shadow-hover font-weight-bolder py-3">Go to ongoing test</button>
+            </a>
+
+        {% elif  old_test.test.test_series %}
+        
+
+            <a href="{% url 'test' old_test.test.id %}">
+               <button class="btn  btn-success btn-shadow-hover font-weight-bolder py-3">Go to ongoing test</button>
+            </a>
+        {% endif %}
+
+
+        
+        
+            <button id="new_test" value="{{current_test.id}}" class="btn  btn-success btn-shadow-hover font-weight-bolder py-3">Go to new test</button>
+        
+
+    </div>
+ 
+  </div>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript"> 
+    window.history.forward(); 
+    function noBack() { 
+        window.history.forward(); 
+    } 
+  </script>
+
+<script>
+
+$('#new_test').click(function () {
+    var csrftoken = getCookie('csrftoken');
+    localStorage.clear();
+    
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+   
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url : "/delete_on_test/{{old_test.test.id}}/",
+        data : {},
+        dataType: "json",
+        beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+        },
+       success: function (data) { 
+
+        location.reload();
+        }
+      }); 
+
+
+    
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1426 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5">Performance</h5>
+          <!--end::Page Title-->
+          <!--begin::Breadcrumb-->
+          <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+            <li class="breadcrumb-item">
+              <a href="{%url 'home' %}" class="text-muted">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              
+              <a href="{%url 'dashboard' %}" class="text-muted">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#" class="text-muted">Performance</a>
+            </li>
+          </ul>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+  
+
+
+  <hr>
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container mb-3">
+      
+      <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url({%static 'assets/media/misc/bg-1.jpg' %})">
+        <!--begin::Title-->
+        <h4 class="d-flex flex-center rounded-top">
+          <span class="text-white upper">{{series_name}} Performance</span>
+          
+        </h4>
+        <!--end::Title-->
+        <!--begin::Tabs-->
+        <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#score">Scores</a>
+          </li>
+         
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#apm">Attempted Progress Module</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#mark">Marks Progress Module</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#ysct">Comparison with Toppers</a>
+          </li>
+          
+          
+        </ul>
+        <!--end::Tabs-->
+      </div>
+      <!--end::Header-->
+      <!--begin::Content-->
+      <div class="tab-content">
+        <!--begin::Tabpane-->
+        <div class="tab-pane fade active show p-8" id="score" role="tabpanel">
+           <!--table style1-->
+           <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body py-0">
+              <!--begin::Table-->
+              <div class="row mt-2">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-2">
+                   
+        <select class="form-control" id="test_select" style="border-color: #097E75;">          
+          {% for test in tests %}  
+          {% if forloop.counter == 1 %}
+             <option class="refresh" value=''>Choose Test</option>
+             <option  hidden  id="test_series" value="{{test.test_series.id}}">{{test}}</option>
+             <option value='{{test.id}}'>{{test}}</option>
+
+             
+            
+          {% else %}   
+          <option value='{{test.id}}'>{{test}}</option>
+
+          {% endif %}  
+             
+          {% endfor %}
+        </select>
+              </div>
+              <div class="col-sm-2">
+                <select class="form-control" id="subject_select" style="border-color: #097E75;">          
+                  {% for subject in subjects %}  
+                  
+                  {% if forloop.counter == 1 %}
+                     <option value='re'>Choose Subject</option>
+                     <option value='{{subject.id}}'>{{subject}}</option>
+                    
+                  {% else %}   
+                  <option  value='{{subject.id}}'>{{subject}}</option>
+        
+                  {% endif %}
+                  {% endfor %}
+                </select>
+         
+               </div>
+               <div class="col-sm-4">
+
+                <a style="color:blue;" class="nav-link font-weight-bolder d-block font-size-lg subject_reset" href="#" ><u>Reset Filter</u></a>
+               </div>
+
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-head-custom table-vertical-center">
+                     
+                        </table>
+                      </div>
+                       <br><br>
+                       <div class="col-sm-4"></div>
+                       <div class="col-sm-4">
+                          <h3 class="text-center mt-4" id="nwc">Nature Wise Composition</h3>
+                       </div>
+                       <div class="col-sm-4"></div>
+
+                      <div class="table-responsive mt-4" id="mychart_div">
+                        <canvas id="myChart" ></canvas>
+                      </div>
+
+                    </div>
+                  </div>
+                  
+                  </div>
+          
+        </div>
+        <!--end::Tabpane-->
+     
+      <!--begin::Tabpane-->
+      <div class="tab-pane fade" id="apm" role="tabpanel">
+        <div class="card card-custom gutter-b mt-5">
+
+          <div class="card-body py-0">
+
+
+            <div class="row mt-2">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-2">
+                <h3 class="mt-2">Choose Test</h3>
+              </div>
+              <div class="col-sm-2">
+                <select class="form-control" id="pm_test_select" style="border-color: #097E75;">          
+                    {% for test in test_without_csat %}  
+
+                    {% if forloop.counter == 1 %}
+                    <option class="refresh" value=''>Choose Test</option>
+                    <option value='{{test.id}}' id="test_series" value="{{test.test_series.id}}">{{test}}</option>
+       
+                    
+                   
+                   {% else %} 
+
+         
+                        <option value='{{test.id}}'>{{test}}</option>
+                   {% endif %}     
+    
+                    {% endfor %}
+                 </select>
+               </div>
+
+               <div class="col-sm-2 mt-2">
+                <label><input type="checkbox" id="apm_csat"> CSAT Test</label>
+               </div>
+
+               <div class="col-sm-2">
+
+                <a style="color:blue;" class="nav-link font-weight-bolder d-block font-size-lg attempted_progress_module" href="#"><u>Reset Filter</u></a>
+
+               </div>
+              
+
+                <br><br><br>
+               <div class="table-responsive mt-4" id="pm_mychart_div">
+                <canvas id="canvas_pm"></canvas>
+              </div>
+
+
+            </div>
+
+
+
+            
+          </div>
+
+        </div>
+       
+          
+            
+      </div>
+      <!--end::Tabpane-->
+
+        <!--begin::Tabpane-->
+        <div class="tab-pane fade" id="mark" role="tabpanel">
+          <div class="card card-custom gutter-b mt-5">
+  
+            <div class="card-body py-0">
+  
+  
+              <div class="row mt-2">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2">
+                  <h3 class="mt-2">Choose Test</h3>
+                </div>
+                <div class="col-sm-2">
+                  <select class="form-control" id="m_test_select" style="border-color: #097E75;">          
+                      {% for test in test_without_csat %} 
+
+                      {% if forloop.counter == 1 %}
+                      <option class="refresh" value=''>Choose Test</option>
+                      <option value='{{test.id}}' id="test_series" value="{{test.test_series.id}}">{{test}}</option>
+         
+                      
+                     
+                   {% else %} 
+           
+                          <option value='{{test.id}}'>{{test}}</option>
+
+                    {% endif %}      
+      
+                      {% endfor %}
+                   </select>
+                 </div>
+                 
+                 <div class="col-sm-2 mt-2">
+                  <label><input type="checkbox" id="mpm_csat"> CSAT Test</label>
+                </div>
+
+                 <div class="col-sm-2">
+
+                  <a style="color:blue;" class="nav-link font-weight-bolder d-block font-size-lg marks_progress_module" href="#"><u>Reset Filter</u></a>
+                 </div>
+
+                  <br><br><br>
+                 <div class="table-responsive mt-4" id="m_mychart_div">
+                  <canvas id="canvas_m"></canvas>
+                </div>
+  
+  
+              </div>
+  
+  
+  
+              
+            </div>
+  
+          </div>
+         
+            
+              
+        </div>
+        <!--end::Tabpane-->
+  
+
+     <!--begin::Tabpane-->
+     <div class="tab-pane fade" id="ysct" role="tabpanel">
+      <div class="card card-custom gutter-b mt-5">
+
+        <div class="card-body py-0">
+
+          <div class="row mt-2">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-2">
+              <h3 class="mt-2">Choose Test</h3>
+            </div>
+            <div class="col-sm-2">
+              <select class="form-control" id="ysc_test_select" style="border-color: #097E75;">          
+                {% for test in test_without_csat %}  
+                {% if forloop.counter == 1 %}
+                <option class="refresh" value=''>Choose Test</option>
+                <option value='{{test.id}}' id="test_series" value="{{test.test_series.id}}">{{test}}</option>
+   
+                
+               
+             {% else %} 
+               
+                    <option value='{{test.id}}'>{{test}}</option>
+          
+               {% endif %}
+                {% endfor %}
+              </select>
+             </div>
+
+
+             <div class="col-sm-2 mt-2">
+              <label><input type="checkbox" id="cwt_csat"> CSAT Test</label>
+            </div>
+
+            
+             <div class="col-sm-2">
+
+              <a style="color:blue;" class="nav-link font-weight-bolder d-block font-size-lg your_score_compare_with_topper" href="#"><u>Reset Filter</u></a>
+             </div>
+
+           
+
+             <div class="table-responsive" id="ysc_mychart_div">
+                 <canvas id="canvas_ysc"></canvas>
+            </div>
+
+        </div>
+          
+        
+        </div>
+
+      </div>
+     
+        
+          
+    </div>
+    
+
+        
+                                        
+      </div>
+      
+     
+   
+    </div>
+
+
+    
+    <!--end::Container-->
+  </div>
+
+  <hr>
+ 
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+
+<script>
+
+function load_attempted_progress_module_data(){
+    
+  var config = {
+    type: 'line',
+    data: {
+      labels: {{test_names|safe}},
+      datasets: [{
+        label: 'Attempted  Score',
+        backgroundColor: "rgba(240,52,52,1)",
+        borderColor: "rgba(240,52,52,1)",
+        data: {{attempted_pm}},
+        fill: false,
+      }, {
+        label: 'Correct Score',
+        fill: false,
+        backgroundColor: "rgba(0,0,255,1)",
+        borderColor: "rgba(0,0,255,1)",
+        data: {{correct_pm}},
+      }, {
+        label: 'In Correct Score',
+        fill: false,
+        backgroundColor: "rgba(255,165,0,1)",
+        borderColor: "rgba(255,165,0,1)",
+        data: {{incorrect_pm}},
+      }
+
+
+
+                             ]
+    },
+    options: {
+
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Progress'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+        
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Test'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Score	'
+          }
+        }]
+      }
+    }
+  };
+
+
+    var ctx = document.getElementById('canvas_pm').getContext('2d');
+ 
+    window.myLine = new Chart(ctx, config);
+}
+//Marks module
+
+function load_marks_progress_module_data(){  
+var config_mark = {
+    type: 'line',
+    data: {
+      labels: {{test_names|safe}},
+      datasets: [{
+        
+        label: ' Score',
+        fill: false,
+        backgroundColor: "rgba(0,0,255,1)",
+        borderColor: "rgba(0,0,255,1)",
+        data: {{your_score}},
+      }, 
+
+
+                             ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Progress'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Test'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Score	'
+          }
+        }]
+      }
+    }
+  };
+
+
+    var ctx = document.getElementById('canvas_m').getContext('2d');
+ 
+    window.myLine = new Chart(ctx, config_mark);
+}
+
+
+
+  //your score compare with topper
+  function load_your_score_compare_with_topper_data(){
+    var config_ysc = {
+    type: 'line',
+    data: {
+      labels: {{test_names|safe}},
+      datasets: [{
+        label: 'Your Score',
+        backgroundColor: "rgba(240,52,52,1)",
+        borderColor: "rgba(240,52,52,1)",
+        data: {{your_score}},
+        fill: false,
+      }, {
+        label: 'Topper',
+        fill: false,
+        backgroundColor: "rgba(0,0,255,1)",
+        borderColor: "rgba(0,0,255,1)",
+        data: {{topper}},
+      }, {
+        label: 'Median',
+        fill: false,
+        backgroundColor: "rgba(255,165,0,1)",
+        borderColor: "rgba(255,165,0,1)",
+        data: {{median}},
+      }
+
+
+
+                             ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Progress'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Test'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Score	'
+          }
+        }]
+      }
+    }
+  };
+
+
+    var ctx = document.getElementById('canvas_ysc').getContext('2d');
+ 
+    window.myLine = new Chart(ctx, config_ysc);
+
+  }
+</script>
+
+<script>
+
+function load_subject_wise_data(){
+    
+
+  $("#myTable th").remove();
+                $("#myTable tr").remove();
+               
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Subject Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Total Questions</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Attempted</th>'); 
+                $("#myTable").append('<th style="min-width: 120px">Correct</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Incorrect</th>');   
+                $("#myTable").append('<th style="min-width: 120px">Marks</th>');         
+                $("#myTable").append('</tr>');
+                
+                var subject_names ={{subject_names|safe}};
+                var total_questions={{total_questions|safe}};
+                var attempted_questions={{attempted_questions|safe}};
+                var correct_ans={{correct_ans|safe}};
+                var incorrect_ans={{incorrect_ans|safe}};                
+                var marks={{marks|safe}};
+                var percentage =new Array();
+                var attempted_percentage =new Array();    
+
+
+
+                for (i = 0; i < subject_names.length; i++) {
+
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);  
+                     var cell3 = row.insertCell(2);  
+                     var cell4 = row.insertCell(3);  
+                     var cell5 = row.insertCell(4);    
+                     var cell6 = row.insertCell(5);     
+                    
+                     cell1.innerHTML = subject_names[i];
+                     cell2.innerHTML = total_questions[i];
+                     cell3.innerHTML = attempted_questions[i];
+                     cell4.innerHTML = correct_ans[i];
+                     cell5.innerHTML = incorrect_ans[i];
+                     cell6.innerHTML = marks[i];
+                     percentage[i] =100/total_questions[i];
+                     attempted_percentage[i] =correct_ans[i] * percentage[i];
+                     attempted_percentage[i]=attempted_percentage[i].toFixed(2);
+
+                     
+                 }
+
+
+
+                 var canvas = document.getElementById('myChart');
+                 new Chart(canvas, {
+                          type: 'pie',    
+                          data: {
+                                 labels: {{subject_names|safe}},
+                                 datasets: [{
+                                    data: attempted_percentage,
+                                     backgroundColor: ['maroon','#097E75','magenta','yellow','#0743A4','pink','#08599B','red','olive','violet','brown','black']
+                                     }]
+                                },
+                          options: {
+                          responsive: true,
+                          maintainAspectRatio: true,
+                          plugins: {
+                          labels: {
+                               render: 'percentage',
+                               fontColor: ['white', 'white', 'white','black', 'white', 'white','white', 'white', 'white','white', 'white', 'white','white', 'white', 'white','white', 'white', 'white'],
+                               precision: 2
+                             }
+                          },
+                        }
+                });
+
+
+           }
+
+   $('.subject_reset').click(function () {
+        $('#nwc').show(); 
+        load_subject_wise_data();
+
+
+      //make  selectbox none
+      $('#test_select option').prop('selected', function() {
+        return this.defaultSelected;
+      });
+
+      $('#subject_select option').prop('selected', function() {
+        return this.defaultSelected;
+      });
+
+    });
+
+    $('.attempted_progress_module').click(function () {
+
+  
+      $("canvas#canvas_pm").remove();
+      $("#pm_mychart_div").append('<canvas id="canvas_pm" width="400" class="p-2" ></canvas>');
+
+      load_attempted_progress_module_data();
+
+      //make  selectbox none
+      $('#pm_test_select option').prop('selected', function() {
+        return this.defaultSelected;
+      });
+
+      $('#apm_csat').prop('checked', false);
+
+    });
+
+    $('.marks_progress_module').click(function () {
+
+
+      $('#m_test_select').blur();
+     $("canvas#canvas_m").remove();
+     $("#m_mychart_div").append('<canvas id="canvas_m" width="400" class="p-2" ></canvas>');
+
+      load_marks_progress_module_data();
+
+      //make  selectbox none
+      $('#m_test_select option').prop('selected', function() {
+        return this.defaultSelected;
+      });
+
+      $('#mpm_csat').prop('checked', false);
+
+    });
+
+    $('.your_score_compare_with_topper').click(function () {
+
+      $('#ysc_test_select').blur();
+      $("canvas#canvas_ysc").remove();
+      $("#ysc_mychart_div").append('<canvas id="canvas_ysc" width="400" class="p-2" ></canvas>');
+      load_your_score_compare_with_topper_data();
+
+       //make  selectbox none
+      $('#ysc_test_select option').prop('selected', function() {
+        return this.defaultSelected;
+      });
+
+      $('#cwt_csat').prop('checked', false);
+    });
+        
+    //Loading CSAT Attempted Progress Module         
+    $('#apm_csat').change(function() {
+    if($(this).is(":checked")) {
+
+  
+
+      var series_id = $("#test_series").attr("value");
+
+      $('#pm_test_select').blur();
+      $("canvas#canvas_pm").remove();
+
+      $("#pm_mychart_div").append('<canvas id="canvas_pm" width="400" class="p-2" ></canvas>');
+      $.ajax({  
+         url: "{% url 'ajax_load_apm_csat_test' %}",
+         data: {'series_id':series_id },                   
+         success: function (chart_data) {
+
+                
+      
+                var config = {
+                type: 'line',
+                data: {
+                labels: chart_data['test_name'],
+                datasets: [{
+                label: 'Attempted  Mark',
+                backgroundColor: "rgba(240,52,52,1)",
+                borderColor: "rgba(240,52,52,1)",
+                data: chart_data['attempted_pm'],
+                fill: false,
+                }, {
+                   label: 'Correct Score',
+                   fill: false,
+                   backgroundColor: "rgba(0,0,255,1)",
+                   borderColor: "rgba(0,0,255,1)",
+                   data: chart_data['correct_pm'],
+                }, {
+                   label: 'In Correct Score',
+                   fill: false,
+                   backgroundColor: window.chartColors.black,
+                   borderColor: window.chartColors.black,
+                   data: chart_data['incorrect_pm'],
+                 }
+
+              ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                display: true,
+                text: 'Progress'
+                 },
+                tooltips: {
+                mode: 'index',
+                intersect: false,
+             },
+            hover: {
+            mode: 'nearest',
+            intersect: true
+            },
+           scales: {
+           xAxes: [{
+           display: true,
+           scaleLabel: {
+               display: true,
+               labelString: 'Test'
+              }
+            }],
+           yAxes: [{
+             display: true,
+             scaleLabel: {
+             display: true,
+             labelString: 'Score	'
+           }
+          }]
+        }
+      }
+      };
+
+
+     var ctx = document.getElementById('canvas_pm').getContext('2d');
+
+      window.myLine = new Chart(ctx, config);
+
+      }
+      });
+    
+
+    }
+
+
+   });
+
+
+
+
+    //Loading CSAT Mark Progress Module         
+    $('#mpm_csat').change(function() {
+    if($(this).is(":checked")) {
+    
+     var series_id = $("#test_series").attr("value");
+
+    
+$('#m_test_select').blur();
+$("canvas#canvas_m").remove();
+
+$("#m_mychart_div").append('<canvas id="canvas_m" width="400" class="p-2" ></canvas>');
+$.ajax({                       
+    url: "{% url 'ajax_load_mpm_csat_test' %}",
+    data: {'series_id':series_id },                   
+    success: function (chart_data) {
+
+     
+      
+var config_marks = {
+  type: 'line',
+  data: {
+    labels: chart_data['test_name'],
+    datasets: [{
+      
+      label: 'Score',
+      fill: false,
+      backgroundColor: "rgba(0,0,255,1)",
+      borderColor: "rgba(0,0,255,1)",
+      data: chart_data['score'],
+    }
+
+
+
+                          ]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Progress'
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true
+    },
+    scales: {
+      xAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Test'
+        }
+      }],
+      yAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Score	'
+        }
+      }]
+    }
+  }
+};
+
+
+  var ctx = document.getElementById('canvas_m').getContext('2d');
+
+  window.myLine = new Chart(ctx, config_marks);
+
+    
+    }
+});
+
+
+
+    }
+
+    
+   });
+
+
+
+    //Loading CSAT Mark Progress Module         
+    $('#cwt_csat').change(function() {
+    if($(this).is(":checked")) {
+    
+    var series_id = $("#test_series").attr("value");
+
+    
+   $('#ysc_test_select').blur();
+   $("canvas#canvas_ysc").remove();
+
+       
+
+
+$("#ysc_mychart_div").append('<canvas id="canvas_ysc" width="400" class="p-2" ></canvas>');
+$.ajax({                       
+    url: "{% url 'ajax_load_cwt_csat_test' %}",
+    data: {'series_id':series_id },                   
+    success: function (chart_data) {
+
+      
+
+   
+    var config = {
+    type: 'line',
+    data: {
+      labels: chart_data['test_names'],
+      datasets: [{
+        label: 'Your Score',
+        backgroundColor: "rgba(240,52,52,1)",
+        borderColor: "rgba(240,52,52,1)",
+        data: chart_data['your_score'],
+        fill: false,
+      }, {
+        label: 'Topper',
+        fill: false,
+        backgroundColor: "rgba(0,0,255,1)",
+        borderColor: "rgba(0,0,255,1)",
+        data: chart_data['topper'],
+      }, {
+        label: 'Median',
+        fill: false,
+        backgroundColor: "rgba(255,165,0,1)",
+        borderColor: "rgba(255,165,0,1)",
+        data: chart_data['median'],
+      }
+
+
+
+                             ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Progress'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Test'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Score	'
+          }
+        }]
+      }
+    }
+  };
+
+
+  var ctx = document.getElementById('canvas_ysc').getContext('2d');
+
+  window.myLine = new Chart(ctx, config);
+
+   
+    
+    }
+});
+ 
+
+    }
+
+   
+    
+   });
+
+
+
+  $("document").ready(function () {
+
+    load_subject_wise_data();
+    load_attempted_progress_module_data();
+    load_marks_progress_module_data();
+    load_your_score_compare_with_topper_data();
+ 
+      var myChart;
+      $('#test_select').change(function(){  
+
+        $('#nwc').show(); 
+
+          var series_id = $("#test_series").attr("value");  
+          $('#test_select').blur();
+          $("canvas#myChart").remove();
+          
+          $("#mychart_div").append('<canvas id="myChart" width="400" class="p-2" ></canvas>');
+          $.ajax({                       
+              url: "{% url 'ajax_load_test' %}",
+              data: {'test':$(this).children("option:selected").val(),'series_id':series_id },                   
+              success: function (chart_data) {
+
+
+                $("#myTable th").remove();
+                $("#myTable tr").remove();
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Subject Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Total Questions</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Attempted</th>'); 
+                $("#myTable").append('<th style="min-width: 120px">Correct</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Incorrect</th>');   
+                $("#myTable").append('<th style="min-width: 120px">Marks</th>'); 
+                $("#myTable").append('</tr>');
+
+                var percentage =new Array();
+                var attempted_percentage =new Array();
+
+                for (i = 0; i < chart_data['subject_names'].length; i++) {
+                
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);
+                     var cell3 = row.insertCell(2);
+                     var cell4 = row.insertCell(3);
+                     var cell5 = row.insertCell(4);
+                     var cell6 = row.insertCell(5);
+                    
+                     cell1.innerHTML = chart_data['subject_names'][i];
+                     cell2.innerHTML = chart_data['total_questions'][i];
+                     cell3.innerHTML = chart_data['attempted_questions'][i];
+                     cell4.innerHTML = chart_data['correct_ans'][i];
+                     cell5.innerHTML = chart_data['incorrect_ans'][i];
+                     cell6.innerHTML = chart_data['marks'][i];                  
+                     percentage[i] =100/chart_data['total_questions'][i];                  
+                     
+                     attempted_percentage[i] =chart_data['correct_ans'][i] * percentage[i];
+                     attempted_percentage[i]=attempted_percentage[i].toFixed(2);
+                     
+                 }
+
+                   
+              var canvas = document.getElementById('myChart');
+              new Chart(canvas, {
+              type: 'pie',    
+              data: {
+              labels: chart_data['subject_names'],
+              datasets: [{
+                 data:attempted_percentage,
+                 backgroundColor: ['maroon','#097E75','magenta','yellow','#0743A4','pink','#08599B','red','olive','violet','brown','black']
+                }]
+              },
+             options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        labels: {
+          render: 'percentage',
+          fontColor: ['white', 'white', 'white','black', 'white', 'white','white', 'white', 'white','white', 'white', 'white','white', 'white', 'white'],
+          precision: 2
+        }
+      },
+    }
+});
+                                 
+              }
+          });
+      });
+     
+
+
+
+      var myChart;
+      $('#subject_select').change(function(){  
+
+        var series_id = $("#test_series").attr("value");
+       
+        
+              
+          $('#subject_select').blur();
+          $("canvas#myChart").remove();
+          
+          $("#mychart_div").append('<canvas id="myChart" width="400" class="p-2" ></canvas>');
+          $.ajax({                       
+              url: "{% url 'ajax_load_subject' %}",
+              data: {'subject':$(this).children("option:selected").val(),'series_id':series_id },                   
+              success: function (chart_data) {
+
+
+
+                $("#myTable th").remove();
+                $("#myTable tr").remove();
+                $("#myTable").append('<tr class="text-uppercase">');
+                $("#myTable").append('<th class="pl-0" style="min-width: 100px">Subject Name</th>');
+                $("#myTable").append('<th style="min-width: 120px">Total Questions</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Attempted</th>'); 
+                $("#myTable").append('<th style="min-width: 120px">Correct</th>');  
+                $("#myTable").append('<th style="min-width: 120px">Incorrect</th>');   
+                $("#myTable").append('<th style="min-width: 120px">Marks</th>'); 
+                $("#myTable").append('</tr>');
+   
+                var percentage =new Array();
+                var attempted_percentage =new Array();
+                
+                for (i = 0; i < chart_data['subject_names'].length; i++) {
+                 
+                     var table = document.querySelector("#myTable");
+                     var totalrows = document.querySelectorAll("#myTable tr").length;
+                     var row = table.insertRow(totalrows);
+                     var cell1 = row.insertCell(0);
+                     var cell2 = row.insertCell(1);
+                     var cell3 = row.insertCell(2);
+                     var cell4 = row.insertCell(3);
+                     var cell5 = row.insertCell(4);
+                     var cell6 = row.insertCell(5);
+                    
+                     cell1.innerHTML = chart_data['subject_names'][i];
+                     cell2.innerHTML = chart_data['total_questions'][i];
+                     cell3.innerHTML = chart_data['attempted_questions'][i];
+                     cell4.innerHTML = chart_data['correct_ans'][i];
+                     cell5.innerHTML = chart_data['incorrect_ans'][i];
+                     cell6.innerHTML = chart_data['marks'][i];
+  		               percentage[i] =100/chart_data['total_questions'][i];
+  		              
+                     attempted_percentage[i] =chart_data['correct_ans'][i] * percentage[i];
+
+                     $('#nwc').hide(); 
+                    
+                     
+                 }
+
+                   
+                                
+              }
+          });
+      });
+     
+
+
+
+
+    
+                            
+  });
+
+
+
+  $('#pm_test_select').change(function(){   
+
+  var series_id = $("#test_series").attr("value");
+
+      
+  $('#pm_test_select').blur();
+  $("canvas#canvas_pm").remove();
+  
+  $("#pm_mychart_div").append('<canvas id="canvas_pm" width="400" class="p-2" ></canvas>');
+  $.ajax({                       
+      url: "{% url 'ajax_load_pm_test' %}",
+      data: {'test':$(this).children("option:selected").val(),'series_id':series_id },                   
+      success: function (chart_data) {
+
+        var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+  var config = {
+    type: 'line',
+    data: {
+      labels: chart_data['test_name'],
+      datasets: [{
+        label: 'Attempted  Mark',
+        backgroundColor: "rgba(240,52,52,1)",
+        borderColor: "rgba(240,52,52,1)",
+        data: chart_data['attempted_pm'],
+        fill: false,
+      }, {
+        label: 'Correct Score',
+        fill: false,
+        backgroundColor: "rgba(0,0,255,1)",
+        borderColor: "rgba(0,0,255,1)",
+        data: chart_data['correct_pm'],
+      }, {
+        label: 'In Correct Score',
+        fill: false,
+        backgroundColor: window.chartColors.black,
+        borderColor: window.chartColors.black,
+        data: chart_data['incorrect_pm'],
+      }
+
+
+
+                            ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Progress'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Test'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Score	'
+          }
+        }]
+      }
+    }
+  };
+
+
+    var ctx = document.getElementById('canvas_pm').getContext('2d');
+ 
+    window.myLine = new Chart(ctx, config);
+
+      
+      }
+  });
+});
+
+//marks module ajax
+
+$('#m_test_select').change(function(){   
+
+var series_id = $("#test_series").attr("value");
+
+$('#m_test_select').blur();
+$("canvas#canvas_m").remove();    
+ 
+$("#m_mychart_div").append('<canvas id="canvas_m" width="400" class="p-2" ></canvas>');
+$.ajax({                       
+    url: "{% url 'ajax_load_mpm_test' %}",
+    data: {'test':$(this).children("option:selected").val(),'series_id':series_id },                   
+    success: function (chart_data) {
+
+     
+      
+var config_marks = {
+  type: 'line',
+  data: {
+    labels: chart_data['test_name'],
+    datasets: [{
+      
+      label: 'Score',
+      fill: false,
+      backgroundColor: "rgba(0,0,255,1)",
+      borderColor: "rgba(0,0,255,1)",
+      data: chart_data['mark'],
+    }
+
+
+
+       ]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Progress'
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true
+    },
+    scales: {
+      xAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Test'
+        }
+      }],
+      yAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Score	'
+        }
+      }]
+    }
+  }
+};
+
+
+  var ctx = document.getElementById('canvas_m').getContext('2d');
+
+  window.myLine = new Chart(ctx, config_marks);
+
+    
+    }
+});
+});
+
+
+
+
+
+
+
+$('#ysc_test_select').change(function(){   
+
+
+
+var series_id = $("#test_series").attr("value");
+
+    
+$('#ysc_test_select').blur();
+$("canvas#canvas_ysc").remove();
+
+$("#ysc_mychart_div").append('<canvas id="canvas_ysc" width="400" class="p-2" ></canvas>');
+$.ajax({                       
+    url: "{% url 'ajax_load_ysc_test' %}",
+    data: {'test':$(this).children("option:selected").val(),'series_id':series_id },                   
+    success: function (chart_data) {
+
+   
+    var config = {
+    type: 'line',
+    data: {
+      labels: chart_data['test_names'],
+      datasets: [{
+        label: 'Your Score',
+        backgroundColor: "rgba(240,52,52,1)",
+        borderColor: "rgba(240,52,52,1)",
+        data: chart_data['your_score'],
+        fill: false,
+      }, {
+        label: 'Topper',
+        fill: false,
+        backgroundColor: "rgba(0,0,255,1)",
+        borderColor: "rgba(0,0,255,1)",
+        data: chart_data['topper'],
+      }, {
+        label: 'Median',
+        fill: false,
+        backgroundColor: "rgba(255,165,0,1)",
+        borderColor: "rgba(255,165,0,1)",
+        data: chart_data['median'],
+      }
+
+
+
+                             ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Progress'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Test'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Score	'
+          }
+        }]
+      }
+    }
+  };
+
+
+  var ctx = document.getElementById('canvas_ysc').getContext('2d');
+
+  window.myLine = new Chart(ctx, config);
+
+   
+    
+    }
+});
+});
+
+                                
+</script> 
+{% endblock %}

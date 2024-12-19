@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Course</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home'  %}" class="text-muted">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">                        
+                      <a href="{% url 'course'  %}" class="text-muted"> Course</a>                    
+                    </li>
+                    <li class="breadcrumb-item">                           
+                        {% with schedules|first as first_schedule %}                      
+                        {% if first_schedule %}                      											
+                             <a href="{% url 'course_detail' first_schedule.topic.part.course.id  %}" class="text-muted">{{first_schedule.topic.part.course}} </a>
+                        {% endif %}
+                      {% endwith %}                  
+                   </li>
+
+                    <li class="breadcrumb-item">
+                      <a href="#" class="text-muted"> Session</a>
+                  </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<br>
+    <!--begin::Entry-->
+
+
+    {% with schedules|first as first_schedule %}                      
+    {% if first_schedule %}                      											
+      <h3 class="text-center">  {{first_schedule.topic.part.course}}  Schedule </h3>
+    {% endif %}
+  {% endwith %} 
+    <div class="d-flex flex-column-fluid">
+
+     
+    
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+            
+              {% for schedule in schedules %}
+           
+              {% if forloop.counter == 1 %}
+            <div class="col-xl-12">
+
+                <div class="d-flex flex-column-fluid">
+                    <!--begin::Container-->
+                    <div class="container">
+
+                      
+                      <div class="row justify-content-md-center mt-1">
+                      <!--table style1-->
+                        <div class="card card-custom w-100 gutter-b">
+                       
+                        <!--begin::Body-->
+                        <div class="card-body py-0">
+                          <!--begin::Table-->
+                          <div class="table-responsive">
+                            <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+                              <thead>
+                                <tr class="text-uppercase">
+                                  <th  style="min-width: 100px">No</th>
+                                  <th style="min-width: 120px">Date & Time</th>
+                                  <th style="min-width: 120px">Subject</th>
+                                  <th  style="min-width: 150px">Topic</th>                                
+                                  <th style="min-width: 120px">Link</th>   
+                                  <th  style="min-width: 100px">Password</th>  
+                                  
+                                </tr>
+                              </thead>
+                              <tbody>
+                  
+                            {% endif %}
+                           
+                                <tr>
+                                  <td class="pl-0 text-dark-75 font-weight-bolder d-block font-size-lg">
+                                      {{forloop.counter}}
+                                  </td>
+                                  <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                      {{ schedule.start_date_time|date:"j-n-Y : g:i A" }}
+                                    </span>
+                                </td>
+
+                                <td class="pl-0 text-dark-75 font-weight-bolder d-block font-size-lg">
+                                  {{schedule.topic.subject}}
+                                </td>
+                                 
+                                  <td class="pl-0">
+                                      <h5 class="text-dark-75 font-weight-bolder d-block font-size-lg"> {{schedule.title|safe}}  </h5>
+                                   
+                                  </td>
+                                 
+
+                                 
+                               
+
+                                  <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+
+                                        <a style="color:#0e7bea;" target="_blank" href="{{schedule.link}}">
+                                            Link
+
+                                        </a>
+                                    </span>
+                                  </td>
+
+                                  <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        {% if schedule.password_if_any %}
+
+                                        {{schedule.password_if_any}}
+
+                                        {% else %}
+
+                                        None 
+
+                                        {% endif %}
+                                    </span>
+                                  </td>
+                                
+                                </tr>
+                                
+                              {% empty%}
+                         <h1>No Live Session Available</h1>
+                                
+                              {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                          <!--end::Table-->
+                        </div>
+                        <!--end::Body-->
+                      </div>
+                        <!--END-->
+                      </div>
+                  
+
+                    </div>
+                    <!--end::Container-->
+                  </div>
+                  
+
+
+            </div>
+
+       
+                
+               
+            
+            
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+
+
+
+{% endblock %}

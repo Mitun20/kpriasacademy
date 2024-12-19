@@ -1,0 +1,354 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Page Heading-->
+        <div class="d-flex align-items-baseline flex-wrap mr-5">
+          <!--begin::Page Title-->
+          <h5 class="text-dark font-weight-bold my-1 mr-5" id="test_id" data="{{test.id}}">{{test.name}}</h5>
+          <!--end::Page Title-->
+          
+        </div>
+        <!--end::Page Heading-->
+      </div>
+      <!--end::Info-->
+      <!--begin::Toolbar-->
+      <div class="d-flex align-items-center mt-2">
+        <!--begin::Actions-->
+       <b> <h5 class="mb-1 text-dark font-weight-bold my-1 mr-5">Time : <p class="float-right  ml-2 text-dark font-weight-bold"  id="showtime" onclick="examTimer"></p></h5></b>
+  
+        <!--end::Actions-->
+        <!--begin::Dropdown-->
+      
+        <!--end::Dropdown-->
+      </div>
+      <!--end::Toolbar-->
+    </div>
+  </div>
+  <!--end::Subheader-->
+
+  <p value="{{test.course_part.id}}" id="part" style="display: none;">{{test.course_part.id}}</p>
+  <!--begin::Entry-->
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+     <div class="row">
+
+      <div class="col-xl-8" >
+        <div class="card card-custom gutter-b example example-compact">
+          <div id="ques_window">
+            <div class="card-header">
+              <h4>Question : {{question_no |add:1}} </h4>
+                       
+              <h3 class="card-title pt-5" id="oldmanfont">{{question.description|safe}}</h3>
+              
+            </div>
+            <div class="card-body">
+              <form class="form">
+                <div class="form-group">
+                  <div class="radio-list">
+                    {% for options in question.option_set.all %}
+                      <label class="radio same_line">
+                        <input type="radio" name="radio5" 
+                          question="{{question.id}}" test="{{test.id}}"
+                          option="{{options.id}}"
+                          value="{{options.id}}">
+
+
+                       <span></span> <h3 id="oldmanfont" class="mt-2"> {{ options.alphabet }}) {{options.description|safe}}</h3>
+                      </label>
+                    {% endfor %}  
+                    
+                    
+                  </div>
+                </div>
+                         
+          </form>
+             </div>
+          </div>
+             <div class="card-footer">
+           
+              <div class="row">
+                <div class="col-sm-8">
+
+                  <ul class="pagination float-left">
+                    <li class="l">
+                      <a id="clear_option" href="#" ques_no={{question.id}} class="btn btn-primary mr-2" style="float:right;">Clear this Selection 
+                      </a>
+                    </li>
+  
+                    </ul>
+
+                </div>
+               
+                <div class="col-sm-4">
+                  
+                  {% if question_count > 1 %}
+                   <ul class="pagination float-right">                             
+                      <li>
+                         <a id="prev_ques" href="#" ques_no={{question_prev}} class="ques_nav btn btn-primary mr-2" style="float:right;">Previous
+                         </a>
+                      </li>
+
+                       <li>
+                          <a id="next_ques" href="#" ques_no={{question_next}} class="ques_nav btn btn-primary mr-2" style="float:right;">Next
+                          </a>
+                       </li>              
+                   </ul>
+                  {% endif %}
+                </div>
+                <div class="col-sm-12 text-center">
+                   <button id="attempted_details" class="btn btn-success mr-2 " type="submit"  data-toggle="modal" data-target="#exampleModal" >
+                      Submit
+                   </button>
+              </div>
+              </div>
+
+              </div>
+             
+        </div>
+      </div>
+      
+      <div class="col-xl-4">
+        <div class="card card-custom gutter-b example example-compact">
+          <div class="card-header">
+              <h3 class="card-title">Questions Navigation Panel</h3>
+              
+            </div>
+               <div class="card-body">
+              <form class="form">
+              <div class="form-group">
+                
+                  <div class="checkbox-inline">
+                 
+                    
+                  {% for question in sorted_questions %}
+           
+																							<li style="display: inline-block;">
+																								<a class="ques_nav mt-1 pt-1 ml-1" style="display:block;width:30px; height:30px; color: black;background: white; border: 2px solid #366CF3; border-radius: 50%;text-align: center;" href="" ques_no="{{ forloop.counter0 }}" questionid="{{question}}" >   {{ forloop.counter }} </a>
+																							</li>
+                    {% endfor %}
+                                               
+                  </div>
+                  
+                </div>
+              </form>
+             </div>
+            
+             
+        </div>
+      </div>
+      
+    
+    </div>	
+      
+      
+    </div>
+    <!--end::Container-->
+  </div>
+  <!--end::Entry-->
+</div>
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Attempts Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="attemptdetails" class="container">
+        <div class="modal-body" id="append_details">
+          
+  
+        
+          
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="quizdetail">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script>
+
+
+
+$("#attempted_details").click(function() {
+  var quizarray = JSON.parse(localStorage.getItem("quizarray"));
+  var lim = quizarray.length; 
+
+  
+          $("#append_details").remove();
+          $("#attemptdetails").append('<div id="append_details">');
+
+ 
+         $("#append_details").append('<h3>');
+        $("#append_details").append('ATTEMPTED &nbsp;&nbsp;&nbsp; &nbsp; : &nbsp; ');
+      
+      $("#append_details").append(lim);
+      $("#append_details").append('<br>');
+      $("#append_details").append('<br>');
+      $("#append_details").append('UNATTEMPTED &nbsp;: &nbsp;');
+      $("#append_details").append({{question_count}}-lim);
+       
+      $("#append_details").append('</h3>');
+      $("#append_details").append('</div>');    
+ 
+});
+
+
+
+
+    
+
+window.history.forward(); 
+  function noBack() { 
+      window.history.forward(); 
+  } 
+
+
+  $('#ques_window').on('change','input',function()
+  {
+    var value = $( "input:checked" ).attr("question");
+    g=parseInt($( "input:checked" ).attr("question"));  
+    $("a[questionid="+g +"]").css({"background":"#366CF3"});
+
+  });
+
+
+
+  //if answer selected change color to green
+
+  var quizarray = JSON.parse(localStorage.getItem("quizarray"));
+  
+  if(quizarray!=null)
+  {
+    var lim = quizarray.length;  
+    for (var i = 0; i < lim; i++)
+     {
+        $("a[questionid="+ quizarray[i].questionid +"]").css({"background":"#366CF3"});
+     }
+  
+   }
+</script>
+
+<script language ="javascript" >
+  var tim; 
+  $(document).ready(function()
+  {
+    
+    examTimer();
+  });
+
+  var min = {{mins}};
+  var sec = {{seconds}};
+
+  /*if (localStorage.getItem("quiz_min") === null)
+    {
+      var min = {{test.duration_in_minutes}};
+      var sec = 0;
+    }
+  else
+    {
+     var min = localStorage.getItem("quiz_min");
+     var sec = localStorage.getItem("quiz_sec");
+    }*/
+
+
+
+  function examTimer() {
+  if (parseInt(min)<0)
+  {
+    min = 0;
+    sec = 0;
+  }
+
+  if (parseInt(sec) >0) {
+    document.getElementById("showtime").innerHTML = ""+min+" : " + sec+"";
+    sec = parseInt(sec) - 1;  
+    //localStorage.setItem("quiz_sec", sec);              
+    tim = setTimeout("examTimer()", 1000);
+    }
+  else {
+
+     if (parseInt(min)==0  && parseInt(sec)==0){
+        document.getElementById("showtime").innerHTML = ""+min+" : " + sec+"";
+        var quizarray = JSON.parse(localStorage.getItem("quizarray"));
+        if(quizarray.length == 0)
+         { 
+           quizarray.push({
+             testid: $('#test_id').attr("data"),           
+          
+          });
+
+
+        } 
+
+        var csrftoken = getCookie('csrftoken');
+        localStorage.clear();
+
+
+     $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url : "/quizdetail/",
+        data : JSON.stringify(quizarray),
+        dataType: "json",
+        beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+        },
+       success: function (data) { 
+            var part = $("#part").attr("value");
+            
+            var str1 = "/course_test_list/";
+            var str2 = part;
+            var res = str1.concat(str2);
+            localStorage.clear();
+            location.href=res;
+
+        }
+      }); 
+    }
+
+  else if (parseInt(sec) == 0) {              
+      document.getElementById("showtime").innerHTML = ""+min+" :" + sec+"";                   
+      min = parseInt(min) - 1;
+      sec=59;
+      //localStorage.setItem("quiz_min", min);
+      //localStorage.setItem("quiz_sec", sec);
+      tim = setTimeout("examTimer()", 1000);
+
+     }
+
+  }
+
+}
+</script>
+
+</body>
+<script type="text/javascript" src="{% static '/js/course_test.js' %}"></script>
+</html>
+{% endblock %}
